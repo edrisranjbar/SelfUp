@@ -7,12 +7,21 @@ tasks = [
     'Eat vegetables',
     'Make a plan for next day',
     'Improve relationships',
-    'Stay happy and laugh',
+    'Stay happy',
     'Learn English',
     'Exercise',
-    'Study everyday',
-    'Code everyday',
+    'Study',
+    'Code',
     'Help others'
 ]
+answers = []
+rank = 0
+percentage_per_task = 100 / len(tasks)
 for task in tasks:
-    print("Did you done " + task)
+    answer = input("Did you " + task + "? " + "(y or n) ")
+    answers.append(answer)
+    if answer == "y":
+        rank += percentage_per_task
+print("You've done " + str(rank) + "% of your tasks!")
+
+# TODO: to save the result into sqlite database
