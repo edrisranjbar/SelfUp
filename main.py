@@ -22,6 +22,8 @@ for task in tasks:
     answers.append(answer)
     if answer == "y":
         rank += percentage_per_task
+rank = round(rank,2)
 print("You've done " + str(rank) + "% of your tasks!")
 
-# TODO: to save the result into sqlite database
+# TODO: save the result into sqlite database
+# TODO: setup virtual env
