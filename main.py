@@ -1,3 +1,33 @@
+import sqlite3
+
+def create_connection(db_file):
+    """ create a database connection to a SQLite database """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        #print(sqlite3.version)
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
+
+
+def create_task_table(db_file):
+    conn = sqlite3.connect(db_file)
+    try:
+        conn.execute("""CREATE TABLE tasks
+                 (id integer PRIMARY KEY, name TEXT)""")
+        return True
+    except:
+        return False
+
+
+create_connection("database.db")
+if create_task_table("database.db"):
+    print("---------------- TASKS TABLE CREATED ----------------")
+else:
+    print("---------------- ERROR: CAN'T CREATE TASKS TABLE ----------------")
 # tasks that I should do every single day
 tasks = [
     'Sleep early in the night',
@@ -26,4 +56,4 @@ rank = round(rank,2)
 print("You've done " + str(rank) + "% of your tasks!")
 
 # TODO: save the result into sqlite database
-# TODO: setup virtual env
+# TODO: save tasks into sqlite database
