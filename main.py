@@ -1,33 +1,49 @@
 import sqlite3
+from datetime import datetime
+# Configs
+db_file = "database.db"
 
-def create_connection(db_file):
-    """ create a database connection to a SQLite database """
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-        #print(sqlite3.version)
-    except Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
-
-
-def create_task_table(db_file):
+def create_tasks_table():
     conn = sqlite3.connect(db_file)
     try:
-        conn.execute("""CREATE TABLE tasks
+        conn.execute("""CREATE TABLE IF NOT EXISTS tasks
                  (id integer PRIMARY KEY, name TEXT)""")
         return True
     except:
         return False
+    conn.close()
+
+def insert_task(task):
+    conn = sqlite3.connect(db_file)
+    cur = conn.cursor()
+    query = f'INSERT INTO tasks (name) VALUES ("{task}")'
+    conn.execute(query)
+    conn.commit()
+    conn.close()
+
+def create_results_table():
+    conn = sqlite3.connect(db_file)
+    try:
+        conn.execute("""CREATE TABLE IF NOT EXISTS results
+                 (id integer PRIMARY KEY, result TEXT, date DATE)""")
+        return True
+    except:
+        return False
+    conn.close()
+
+def insert_result(result,date):
+    conn = sqlite3.connect(db_file)
+    cur = conn.cursor()
+    query = f'INSERT INTO results (result,date) VALUES ("{result}","{date}")'
+    conn.execute(query)
+    conn.commit()
+    conn.close()
+
+create_tasks_table()
+create_results_table()
 
 
-create_connection("database.db")
-if create_task_table("database.db"):
-    print("---------------- TASKS TABLE CREATED ----------------")
-else:
-    print("---------------- ERROR: CAN'T CREATE TASKS TABLE ----------------")
+
 # tasks that I should do every single day
 tasks = [
     'Sleep early in the night',
@@ -44,6 +60,9 @@ tasks = [
     'Code',
     'Help others'
 ]
+for task in tasks:
+    insert_task(task)
+
 answers = []
 rank = 0
 percentage_per_task = 100 / len(tasks)
@@ -55,5 +74,6 @@ for task in tasks:
 rank = round(rank,2)
 print("You've done " + str(rank) + "% of your tasks!")
 
-# TODO: save the result into sqlite database
-# TODO: save tasks into sqlite database
+# insert result into results table
+date = datetime.now().strftime("%Y/%m/%d")
+insert_result(rank, date)
