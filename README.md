@@ -8,5 +8,6 @@ this is a personal project to improve my skills change myself to a new bettwer v
 - [x] save result
 - [x] clean tasks table and insert again
 - [x] display result based on rank
-- [ ] display a menu (show tasks, delete task, add new task, show last results)
+- [x] display a menu (show tasks, delete task, add new task, show last results)
+- [ ] response based on menu item
 - [ ] display progress in graphical chart

@@ -9,13 +9,12 @@ def display_menu():
         USER SHOULD BE ABLE TO CHOOSE AN ITEM IN MENU
         AND WE SHOULD DISPLAY SOMETHING IN EXCHANGE!
     """
-    print("""PLEASE CHOOS AND ITEM: (1-4)
-        1) SHOW TASKS
-        2) DELETE TASK
-        3) ADD A NEW TASK
-        4) SHOW LAST RESULTS
+    input("""PLEASE CHOOS ONE ITEM: (1-4)
+    1) SHOW TASKS
+    2) DELETE TASK
+    3) ADD A NEW TASK
+    4) SHOW LAST RESULTS 
     """)
-    input("")
 
 def create_tasks_table():
     conn = sqlite3.connect(db_file)
