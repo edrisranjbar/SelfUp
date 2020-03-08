@@ -3,6 +3,20 @@ from datetime import datetime
 # Configs
 db_file = "database.db"
 
+def display_menu():
+    """
+        HERE WE DISPLAY A MENU;
+        USER SHOULD BE ABLE TO CHOOSE AN ITEM IN MENU
+        AND WE SHOULD DISPLAY SOMETHING IN EXCHANGE!
+    """
+    print("""PLEASE CHOOS AND ITEM: (1-4)
+        1) SHOW TASKS
+        2) DELETE TASK
+        3) ADD A NEW TASK
+        4) SHOW LAST RESULTS
+    """)
+    input("")
+
 def create_tasks_table():
     conn = sqlite3.connect(db_file)
     try:
@@ -39,10 +53,18 @@ def insert_result(result,date):
     conn.commit()
     conn.close()
 
+def clean_table(table):
+    conn = sqlite3.connect(db_file)
+    cur = conn.cursor()
+    query = f'DELETE FROM {table}'
+    conn.execute(query)
+    conn.commit()
+    conn.close()
+
 create_tasks_table()
 create_results_table()
-
-
+clean_table("tasks")
+display_menu()
 
 # tasks that I should do every single day
 tasks = [
@@ -73,7 +95,10 @@ for task in tasks:
         rank += percentage_per_task
 rank = round(rank,2)
 print("You've done " + str(rank) + "% of your tasks!")
-
+if rank > 80:
+    print("Well done! you did great!")
+else:
+    print("OOPS! Your rank is not good! tomorrow try more!")
 # insert result into results table
 date = datetime.now().strftime("%Y/%m/%d")
 insert_result(rank, date)

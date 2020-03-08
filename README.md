@@ -6,4 +6,7 @@ this is a personal project to improve my skills change myself to a new bettwer v
 - [x] save tasks
 - [x] create result table
 - [x] save result
-- [ ] clean tasks table and insert again
+- [x] clean tasks table and insert again
+- [x] display result based on rank
+- [ ] display a menu (show tasks, delete task, add new task, show last results)
+- [ ] display progress in graphical chart
