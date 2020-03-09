@@ -9,12 +9,24 @@ def display_menu():
         USER SHOULD BE ABLE TO CHOOSE AN ITEM IN MENU
         AND WE SHOULD DISPLAY SOMETHING IN EXCHANGE!
     """
-    input("""PLEASE CHOOS ONE ITEM: (1-4)
+    response = input("""PLEASE CHOOS ONE ITEM: (1-4)
     1) SHOW TASKS
     2) DELETE TASK
     3) ADD A NEW TASK
     4) SHOW LAST RESULTS 
     """)
+
+    if response == "1":
+        show_tasks(10)
+    elif response == "2":
+        delete_tasks()
+    elif response == "3":
+        add_task()
+    elif response == "4":
+        show_last_results()
+    else:
+        print("Your response does not match any item; so choose again!")
+        display_menu()
 
 def create_tasks_table():
     conn = sqlite3.connect(db_file)
@@ -59,6 +71,17 @@ def clean_table(table):
     conn.execute(query)
     conn.commit()
     conn.close()
+
+def show_tasks(limit):
+    """RETURNS A GRAPHICAL CHART OF LAST RESULTS"""
+    conn = sqlite3.connect(db_file)
+    query = "SELECT * FROM results LIMIT {}".format(limit)
+    results = conn.execute(query).fetchall()
+    for id,rank,date in results:
+        print(id,rank,date)
+    conn.close()
+    # DISPLAY RESULTS IN A CHART
+
 
 create_tasks_table()
 create_results_table()
