@@ -10,4 +10,4 @@ this is a personal project to improve my skills change myself to a new bettwer v
 - [x] display result based on rank
 - [x] display a menu (show tasks, delete task, add new task, show last results)
 - [ ] response based on menu item
-- [ ] display progress in graphical chart
+- [x] display progress in graphical chart 
