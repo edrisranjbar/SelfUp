@@ -25,9 +25,10 @@ def display_menu():
     if response == "1":
         show_tasks(10)
     elif response == "2":
-        delete_tasks()
+        delete_task()
     elif response == "3":
-        add_task()
+        task = input("TYPE YOUR TASK TITLE: ")
+        add_task(task)
     elif response == "4":
         show_last_results(10)
     elif response == "5":
@@ -157,6 +158,21 @@ def add_today_results():
     date = datetime.now().strftime("%Y/%m/%d")
     insert_result(rank, date)
 
+
+def add_task(task):
+    """ ADD A SINGLE TASK """
+    conn = sqlite3.connect(db_file)
+    cur = conn.cursor()
+    query = f'INSERT INTO tasks (name) VALUES ("{task}")'
+    try:
+        conn.execute(query)
+        conn.commit()
+        print("task added successfuly!")
+    except:
+        print("ERROR: can not add new task")
+    finally:
+        conn.close()
+    return True
 
 # IF NOT EXISTS
 create_tasks_table()
