@@ -81,7 +81,7 @@ def clean_table(table):
     conn.commit()
     conn.close()
 
-def show_tasks(limit=None):
+def show_tasks(limit=None,show_id=False):
     """ RETURNS ALL TASKS """
     conn = sqlite3.connect(db_file)
     if limit != None:
@@ -173,6 +173,23 @@ def add_task(task):
     finally:
         conn.close()
     return True
+
+
+def delete_task():
+    """ DELETE A SINGLE TASK BASED ON ID """
+    # Show tasks and their ids
+    show_tasks(show_id=True)
+    task_id = input("TYPE TASK ID TO REMOVE: ")
+    conn = sqlite3.connect(db_file)
+    cur = conn.cursor()
+    query = f'DELETE FROM tasks WHERE id="{task_id}"'
+    try:
+        conn.execute(query)
+        conn.commit()
+    except:
+        print("ERROR: can not delete task with id {}".format(task_id))
+    finally:
+        conn.close()
 
 # IF NOT EXISTS
 create_tasks_table()
