@@ -1,3 +1,4 @@
 .vscode
 venv
 database.db
+.idea
