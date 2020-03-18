@@ -106,7 +106,7 @@ def show_tasks(limit=None):
     counter = 0
     for task_id, name in tasks:
         counter += 1
-        print(id, name)
+        print(task_id, name)
     conn.close()
     if counter < 1:
         print(f"{Styles.danger}There is no task available!{Styles.end_part}")
@@ -147,7 +147,7 @@ def show_last_results(limit):
     ranks = []
     dates = []
     counter = 0
-    for id, rank, date in results:
+    for result_id, rank, date in results:
         ranks.append(rank)
         dates.append(date)
         counter += 1
@@ -220,7 +220,7 @@ def add_task(task):
 def delete_task():
     """ DELETE A SINGLE TASK BASED ON ID """
     # Show tasks and their ids
-    there_is_task = show_tasks(show_id=True)
+    there_is_task = show_tasks()
     if there_is_task:
         task_id = input("TYPE TASK ID TO REMOVE: ")
         connection = sqlite3.connect(db_file)
@@ -268,4 +268,5 @@ class Styles:
 create_tasks_table()
 create_results_table()
 tasks_count = get_tasks_count()
+
 display_menu()
