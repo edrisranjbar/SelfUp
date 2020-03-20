@@ -196,7 +196,7 @@ class Evaluator:
             elif answer != "y" and answer != "n":
                 while answer != "y" and answer != "n":
                     print(f"{Styles.warning}please answer with y or n!{Styles.end_part}")
-                    answer = input(f"{Styles.info}Did you " + task + "? " + "(y or n) {Styles.end_part}")
+                    answer = input(f"{Styles.info}Did you {task} ? (y or n) {Styles.end_part}")
         rank = round(rank, 2)
         print(f"{Styles.success}You've done {str(rank)} % of your tasks!{Styles.end_part}")
         if rank > 80:
