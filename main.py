@@ -19,13 +19,13 @@ class Evaluator:
             AND WE SHOULD DISPLAY SOMETHING IN EXCHANGE!
         """
         response = input("""    1) SHOW TASKS
-        2) DELETE TASK
-        3) ADD A NEW TASK
-        4) SHOW LAST RESULTS 
-        5) GET AND ADD TODAY RESULTS
-        6) DELETE LAST RESULT
-        7) Exit
-        PLEASE CHOOSE ONE ITEM: (1-7) """)
+    2) DELETE TASK
+    3) ADD A NEW TASK
+    4) SHOW LAST RESULTS 
+    5) GET AND ADD TODAY RESULTS
+    6) DELETE LAST RESULT
+    7) Exit
+    PLEASE CHOOSE ONE ITEM: (1-7) """)
 
         if response == "1":
             self.show_tasks(10)
