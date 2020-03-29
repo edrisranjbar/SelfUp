@@ -1,10 +1,28 @@
 from typing import List, Any
-
+import os
+import platform
 import numpy as np
 import matplotlib.pyplot as plt
 import sqlite3
 from datetime import datetime
 
+class Category:
+    """ To manage task categories """
+    def add(self, name, description):
+        """ Add a new category with some details """
+        pass
+
+    def delete(self, id):
+        """ Delete a specific category with id """
+        pass
+
+    def get_all(self):
+        """ Get all of categories and returns an Array """
+        pass
+
+    def show_all(self, categories):
+        """ Show all of the categories in the list """
+        pass
 
 class Evaluator:
     """ EVALUATOR ANALYZE YOUR DATA """
@@ -267,8 +285,15 @@ class Styles:
     bold = '\033[1m'
     underline = '\033[4m'
 
+def clear():
+    """ CLEAR THE TERMINAL SCREEN """
+    if platform.system() == "Windows":
+        os.system('cls')
+    elif platform.system() == "Linux":
+        os.system('clear')
 
 if __name__ == "__main__":
+    clear()
     app = Evaluator()
     # IF NOT EXISTS
     app.create_tasks_table()

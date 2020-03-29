@@ -29,4 +29,4 @@ Because I think this project worth to spread and also it helps others to make th
 - [ ] show task categories
 - [ ] create menu for **category management**
 - [x] go back to menue if user typed "y"
-- [ ] clear screen (consider different type of Operating Systems)
+- [x] clear screen (consider different type of Operating Systems)
