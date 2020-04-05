@@ -8,9 +8,29 @@ from datetime import datetime
 
 class Category:
     """ To manage task categories """
+    db_file = "database.db"
+
+    def create_table(self):
+        try:
+            connection = sqlite3.connect(self.db_file)
+            connection.execute("""CREATE TABLE IF NOT EXISTS category
+                    (id integer PRIMARY KEY, name TEXT, description TEXT)""")
+            connection.close()
+            return True
+        except:
+            print(f"{danger}Can't create category table{end_part}")
+            return False
+
     def add(self, name, description):
         """ Add a new category with some details """
-        pass
+        try:
+            connection = sqlite3.connect(self.db_file)
+            connection.execute('INSERT INTO category (name,description) VALUES ("{name}","{description}")')
+            connection.close()
+            return True
+        except:
+            print(f"{danger}Can't insert category{end_part}")
+            return False
 
     def delete(self, id):
         """ Delete a specific category with id """
@@ -51,7 +71,7 @@ class Evaluator:
         elif response == "2":
             self.delete_task()
         elif response == "3":
-            task = input(f"TYPE YOUR TASK TITLE: {Styles.warning}(Enter b to back){Styles.end_part}")
+            task = input(f"TYPE YOUR TASK TITLE: {warning}(Enter b to back){end_part} ")
             if task != "b":
                 self.add_task(task)
         elif response == "4":
@@ -60,12 +80,12 @@ class Evaluator:
             self.add_today_results()
         elif response == "6":
             self.delete_last_result()
-        elif response == "7":
+        elif response == "7" or response == "exit":
             global continue_app
             continue_app = False
-            print(f"{Styles.header}Goodbye!{Styles.end_part}")
+            print(f"{header}Goodbye!{end_part}")
         else:
-            print(f"{Styles.warning}Your response does not match any item; so choose again!{Styles.end_part}")
+            print(f"{warning}Your response does not match any item; so choose again!{end_part}")
             self.display_menu()
 
     def create_tasks_table(self):
@@ -76,7 +96,7 @@ class Evaluator:
             connection.close()
             return True
         except:
-            print(f"{Styles.danger}Can't create tasks table{Styles.end_part}")
+            print(f"{danger}Can't create tasks table{end_part}")
             return False
 
     def insert_task(self, task):
@@ -96,7 +116,7 @@ class Evaluator:
             connection.close()
             return True
         except:
-            print(f"{Styles.danger}Can't create tasks table{Styles.end_part}")
+            print(f"{danger}Can't create tasks table{end_part}")
             return False
 
     def insert_result(self, result, date):
@@ -117,6 +137,7 @@ class Evaluator:
 
     def show_tasks(self, limit=None):
         """ RETURNS ALL TASKS """
+        clear()
         conn = sqlite3.connect(self.db_file)
         if limit is not None:
             query = "SELECT * FROM tasks LIMIT {}".format(limit)
@@ -129,7 +150,7 @@ class Evaluator:
             print(task_id, name)
         conn.close()
         if counter < 1:
-            print(f"{Styles.danger}There is no task available!{Styles.end_part}")
+            print(f"{danger}There is no task available!{end_part}")
             return False
         return True
 
@@ -157,6 +178,7 @@ class Evaluator:
                 return False
 
     def show_last_results(self, limit):
+        clear()
         """RETURNS A GRAPHICAL CHART OF LAST RESULTS"""
         conn = sqlite3.connect(self.db_file)
         query = "SELECT * FROM results LIMIT {}".format(limit)
@@ -180,7 +202,7 @@ class Evaluator:
             plt.title('last results')
             plt.show()
         else:
-            print(f"{Styles.warning}There is no result to display!{Styles.end_part}")
+            print(f"{warning}There is no result to display!{end_part}")
 
     def get_tasks_count(self):
         """ RETURNS COUNT OF ALL OF THE TASKS """
@@ -192,7 +214,8 @@ class Evaluator:
 
     def add_today_results(self):
         """ this method will add toda's analyze results """
-        user_answer = input(f"Do you wanna coninue? {Styles.warning}(y or n){Styles.end_part} ")
+        clear()
+        user_answer = input(f"Do you wanna coninue? {warning}(y or n){end_part} ")
         if user_answer == "y":
             answers = []
             rank = 0
@@ -206,29 +229,30 @@ class Evaluator:
                     rank += percentage_per_task
                 elif answer != "y" and answer != "n":
                     while answer != "y" and answer != "n":
-                        print(f"{Styles.warning}please answer with y or n!{Styles.end_part}")
-                        answer = input(f"{Styles.info}Did you {task} ? (y or n) {Styles.end_part}")
+                        print(f"{warning}please answer with y or n!{end_part}")
+                        answer = input(f"{info}Did you {task} ? (y or n) {end_part}")
             rank = round(rank, 2)
-            print(f"{Styles.success}You've done {str(rank)} % of your tasks!{Styles.end_part}")
+            print(f"{success}You've done {str(rank)} % of your tasks!{end_part}")
             if rank > 80:
-                print(f"{Styles.success}Well done! you did great!{Styles.end_part}")
+                print(f"{success}Well done! you did great!{end_part}")
             else:
-                print(f"{Styles.warning}OOPS! Your rank is not good! tomorrow try more!{Styles.end_part}")
+                print(f"{warning}OOPS! Your rank is not good! tomorrow try more!{end_part}")
             # insert result into results table
             date = datetime.now().strftime("%Y/%m/%d")
             self.insert_result(rank, date)
 
     def add_task(self, task):
         """ ADD A SINGLE TASK """
+        clear()
         connection = sqlite3.connect(self.db_file)
         cursor = connection.cursor()
         query = f'INSERT INTO tasks (name) VALUES ("{task}")'
         try:
             cursor.execute(query)
             connection.commit()
-            print(f"{Styles.success}Task added successfully!{Styles.end_part}")
+            print(f"{success}Task added successfully!{end_part}")
         except:
-            print(f"{Styles.danger}Can not add new task{Styles.end_part}")
+            print(f"{danger}Can not add new task{end_part}")
         finally:
             connection.close()
         return True
@@ -236,9 +260,10 @@ class Evaluator:
     def delete_task(self):
         """ DELETE A SINGLE TASK BASED ON ID """
         # Show tasks and their ids
+        clear()
         there_is_task = self.show_tasks()
         if there_is_task:
-            task_id = input(f"TYPE TASK ID TO REMOVE: {Styles.warning}(Enter b to back){Styles.end_part}")
+            task_id = input(f"TYPE TASK ID TO REMOVE: {warning}(Enter b to back){end_part} ")
             if task_id != "b":
                 connection = sqlite3.connect(self.db_file)
                 cursor = connection.cursor()
@@ -246,9 +271,9 @@ class Evaluator:
                 try:
                     cursor.execute(query)
                     connection.commit()
-                    print(f"{Styles.success}Task delete successfully!{Styles.end_part}")
+                    print(f"{success}Task delete successfully!{end_part}")
                 except:
-                    print(f"{Styles.danger}Can not delete task with id {task_id}{Styles.end_part}")
+                    print(f"{danger}Can not delete task with id {task_id}{end_part}")
                 finally:
                     connection.close()
             else:
@@ -256,8 +281,9 @@ class Evaluator:
 
     def delete_last_result(self):
         """ Delete last result """
+        clear()
         if self.do_we_have_result():
-            answer = input(f"{Styles.info}Are you sure? {Styles.end_part}{Styles.warning}(y or n){Styles.end_part}")
+            answer = input(f"{info}Are you sure? {end_part}{warning}(y or n){end_part}")
             if answer == "y":
                 connection = sqlite3.connect(self.db_file)
                 cursor = connection.cursor()
@@ -265,25 +291,23 @@ class Evaluator:
                 try:
                     cursor.execute(query)
                     connection.commit()
-                    print(f"{Styles.success} Last result deleted successfully!{Styles.end_part}")
+                    print(f"{success} Last result deleted successfully!{end_part}")
                 except Exception as error:
-                    print(f"{Styles.danger} Sorry; can't delete last result. {error}{Styles.end_part}")
+                    print(f"{danger} Sorry; can't delete last result. {error}{end_part}")
             else:
                 return True
         else:
-            print(f"{Styles.warning} There is no result to delete!{Styles.end_part}")
+            print(f"{warning} There is no result to delete!{end_part}")
 
 
-class Styles:
-    """ IN ORDER TO USE Styles WE SHOULD USE THESE CONSTANTS EASILY! """
-    header = '\033[95m'
-    info = '\033[94m'
-    success = '\033[92m'
-    warning = '\033[93m'
-    danger = '\033[91m'
-    end_part = '\033[0m'
-    bold = '\033[1m'
-    underline = '\033[4m'
+header = '\033[95m'
+info = '\033[94m'
+success = '\033[92m'
+warning = '\033[93m'
+danger = '\033[91m'
+end_part = '\033[0m'
+bold = '\033[1m'
+underline = '\033[4m'
 
 def clear():
     """ CLEAR THE TERMINAL SCREEN """
@@ -293,7 +317,6 @@ def clear():
         os.system('clear')
 
 if __name__ == "__main__":
-    clear()
     app = Evaluator()
     # IF NOT EXISTS
     app.create_tasks_table()
