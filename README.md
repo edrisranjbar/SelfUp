@@ -24,9 +24,9 @@ Because I think this project worth to spread and also it helps others to make th
 - [x] prevent closing app except user says so
 - [x] delete results (last one)
 - [x] check if there is a result then delete; otherwise raise warning
-- [ ] add task category
-- [ ] delete task category
-- [ ] show task categories
+- [x] add task category
+- [x] delete task category
+- [x] show task categories
 - [ ] create menu for **category management**
 - [x] go back to menue if user typed "y"
 - [x] clear screen (consider different type of Operating Systems)

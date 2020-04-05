@@ -10,6 +10,29 @@ class Category:
     """ To manage task categories """
     db_file = "database.db"
 
+    def __init__(self):
+        self.create_table()
+
+    def show_menu(self):
+        response = input(f"""{header}CATEGORY MANAGEMENT{end_part}
+        {info}  1. Show categories
+            2. Add category
+            3. Delete Category
+            Enter 1 to 3 {end_part}{warning}(b to go back): {end_part}""")
+        if response == "1":
+            self.show_all()
+        elif response == "2":
+            category_name = input(f"{bold}Type category name: {end_part}")
+            category_description = input(f"{bold}Type category description: {end_part}")
+            self.add(category_name,category_description)
+        elif response == "3":
+            #TODO: show all with 
+            self.show_all()
+            category_id = input(f"{bold}Type category id to remove: {end_part}")
+            self.delete(category_id)
+        elif response == "b":
+            return True
+
     def create_table(self):
         try:
             connection = sqlite3.connect(self.db_file)
@@ -25,30 +48,63 @@ class Category:
         """ Add a new category with some details """
         try:
             connection = sqlite3.connect(self.db_file)
-            connection.execute('INSERT INTO category (name,description) VALUES ("{name}","{description}")')
+            cursor = connection.cursor()
+            cursor.execute(f'INSERT INTO category (name,description) VALUES ("{name}","{description}")')
+            connection.commit()
             connection.close()
             return True
         except:
             print(f"{danger}Can't insert category{end_part}")
             return False
 
-    def delete(self, id):
+    def delete(self, category_id):
         """ Delete a specific category with id """
-        pass
+        connection = sqlite3.connect(self.db_file)
+        try:
+            query = f"DELETE FROM category WHERE id='{category_id}'"
+            cursor = connection.cursor()
+            cursor.execute(query)
+            connection.commit()
+            print(f"{success}Category deleted successfuly.{end_part}")
+        except:
+            print(f"{danger}Can not delete catrgory with id {category_id}{end_part}")
+            return False
+        finally:
+            connection.close()
+        return True
+
 
     def get_all(self):
         """ Get all of categories and returns an Array """
-        pass
+        connection = sqlite3.connect(self.db_file)
+        query = "SELECT * FROM category"
+        try:
+            categories: List[Any] = connection.execute(query).fetchall()
+        except:
+            print(f"{danger}Can not get all categories!{end_part}")
+        finally:
+            connection.close()
+        return categories
 
-    def show_all(self, categories):
+
+    def show_all(self):
         """ Show all of the categories in the list """
-        pass
+        categories = self.get_all()
+        counter = 0
+        for category in categories:
+            counter += 1
+            print("id: " + str(category[0]) + "\t name: " + str(category[1]))
+        if counter < 1 :
+            print(f"{danger}There is no category to display!{end_part}")
+
 
 class Evaluator:
     """ EVALUATOR ANALYZE YOUR DATA """
     db_file = "database.db"
 
     def __init__(self):
+        self.create_tasks_table()
+        self.create_results_table()
         self.tasks_count = self.get_tasks_count()
 
     def display_menu(self):
@@ -63,7 +119,8 @@ class Evaluator:
     4) SHOW LAST RESULTS 
     5) GET AND ADD TODAY RESULTS
     6) DELETE LAST RESULT
-    7) Exit
+    7) CATEGORY MANAGEMENT
+    8) Exit
     PLEASE CHOOSE ONE ITEM: (1-7) """)
 
         if response == "1":
@@ -80,7 +137,9 @@ class Evaluator:
             self.add_today_results()
         elif response == "6":
             self.delete_last_result()
-        elif response == "7" or response == "exit":
+        elif response == "7":
+            category.show_menu()
+        elif response == "8" or response == "exit":
             global continue_app
             continue_app = False
             print(f"{header}Goodbye!{end_part}")
@@ -317,11 +376,8 @@ def clear():
         os.system('clear')
 
 if __name__ == "__main__":
+    category = Category()
     app = Evaluator()
-    # IF NOT EXISTS
-    app.create_tasks_table()
-    app.create_results_table()
-
     continue_app = True
     plt.rcdefaults()
     while continue_app:
