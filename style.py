@@ -1,0 +1,8 @@
+header = '\033[95m'
+info = '\033[94m'
+success = '\033[92m'
+warning = '\033[93m'
+danger = '\033[91m'
+end_part = '\033[0m'
+bold = '\033[1m'
+underline = '\033[4m'
