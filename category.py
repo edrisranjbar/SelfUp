@@ -1,4 +1,4 @@
-import sqlite3
+from sqlite3 import *
 from typing import List, Any
 
 import config
@@ -34,12 +34,12 @@ class Category:
     @staticmethod
     def create_table():
         try:
-            connection = sqlite3.connect(config.db_file)
+            connection = connect(config.db_file)
             connection.execute("""CREATE TABLE IF NOT EXISTS category
                     (id integer PRIMARY KEY, name TEXT, description TEXT)""")
             connection.close()
             return True
-        except:
+        except Error:
             print(f"{danger}Can't create category table{end_part}")
             return False
 
@@ -47,27 +47,27 @@ class Category:
     def add(name, description):
         """ Add a new category with some details """
         try:
-            connection = sqlite3.connect(config.db_file)
+            connection = connect(config.db_file)
             cursor = connection.cursor()
             cursor.execute(f'INSERT INTO category (name,description) VALUES ("{name}","{description}")')
             connection.commit()
             connection.close()
             return True
-        except:
+        except Error:
             print(f"{danger}Can't insert category{end_part}")
             return False
 
     @staticmethod
     def delete(category_id):
         """ Delete a specific category with id """
-        connection = sqlite3.connect(config.db_file)
+        connection = connect(config.db_file)
         try:
             query = f"DELETE FROM category WHERE id='{category_id}'"
             cursor = connection.cursor()
             cursor.execute(query)
             connection.commit()
             print(f"{success}Category deleted successfuly.{end_part}")
-        except:
+        except Error:
             print(f"{danger}Can not delete catrgory with id {category_id}{end_part}")
             return False
         finally:
@@ -77,11 +77,11 @@ class Category:
     @staticmethod
     def get_all():
         """ Get all of categories and returns an Array """
-        connection = sqlite3.connect(config.db_file)
+        connection = connect(config.db_file)
         query = "SELECT * FROM category"
         try:
             categories: List[Any] = connection.execute(query).fetchall()
-        except:
+        except Error:
             print(f"{danger}Can not get all categories!{end_part}")
             return False
         finally:

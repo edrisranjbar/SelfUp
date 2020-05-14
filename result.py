@@ -1,6 +1,6 @@
-import sqlite3
+from sqlite3 import *
 from datetime import datetime
-
+from matplotlib import pyplot as plt
 from style import *
 import numpy as np
 from task import Task
@@ -12,7 +12,7 @@ class Result:
     @staticmethod
     def do_we_have_result():
         """ returns True or False """
-        connection = sqlite3.connect(config.db_file)
+        connection = connect(config.db_file)
         query = "SELECT COUNT(*) FROM results"
         cursor = connection.cursor()
         results = cursor.execute(query).fetchone()
@@ -23,10 +23,10 @@ class Result:
                 return False
 
     @staticmethod
-    def show_lasts(limit, plt=None):
+    def show_lasts(limit):
         App.clear()
         """RETURNS A GRAPHICAL CHART OF LAST RESULTS"""
-        conn = sqlite3.connect(config.db_file)
+        conn = connect(config.db_file)
         query = "SELECT * FROM results LIMIT {}".format(limit)
         results = conn.execute(query).fetchall()
         ranks = []
@@ -54,7 +54,7 @@ class Result:
     def add_today_results():
         """ this method will add toda's analyze results """
         App.clear()
-        user_answer = input(f"Do you wanna coninue? {warning}(y or n){end_part} ")
+        user_answer = input(f"Do you wanna continue? {warning}(y or n){end_part} ")
         if user_answer == "y":
             answers = []
             rank = 0
@@ -82,20 +82,20 @@ class Result:
 
     @staticmethod
     def create_table():
-        connection = sqlite3.connect(config.db_file)
+        connection = connect(config.db_file)
         cursor = connection.cursor()
         try:
             cursor.execute("""CREATE TABLE IF NOT EXISTS results
                     (id integer PRIMARY KEY, result TEXT, date DATE)""")
             connection.close()
             return True
-        except:
+        except Error:
             print(f"{danger}Can't create tasks table{end_part}")
             return False
 
     @staticmethod
     def insert_result(result, date):
-        connection = sqlite3.connect(config.db_file)
+        connection = connect(config.db_file)
         cursor = connection.cursor()
         query = f'INSERT INTO results (result,date) VALUES ("{result}","{date}")'
         cursor.execute(query)
@@ -109,7 +109,7 @@ class Result:
         if Result.do_we_have_result():
             answer = input(f"{info}Are you sure? {end_part}{warning}(y or n){end_part}")
             if answer == "y":
-                connection = sqlite3.connect(config.db_file)
+                connection = connect(config.db_file)
                 cursor = connection.cursor()
                 query = "delete from results where id= (select id from results order by id desc limit 1);"
                 try:

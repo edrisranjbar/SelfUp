@@ -14,14 +14,10 @@ class Task:
         connection = sqlite3.connect(config.db_file)
         cursor = connection.cursor()
         query = f'INSERT INTO tasks (name) VALUES ("{task}")'
-        try:
-            cursor.execute(query)
-            connection.commit()
-            print(f"{success}Task added successfully!{end_part}")
-        except:
-            print(f"{danger}Can not add new task{end_part}")
-        finally:
-            connection.close()
+        cursor.execute(query)
+        connection.commit()
+        print(f"{success}Task added successfully!{end_part}")
+        connection.close()
         return True
 
     @staticmethod
@@ -77,14 +73,10 @@ class Task:
                 connection = sqlite3.connect(config.db_file)
                 cursor = connection.cursor()
                 query = f'DELETE FROM tasks WHERE id="{task_id}"'
-                try:
-                    cursor.execute(query)
-                    connection.commit()
-                    print(f"{success}Task delete successfully!{end_part}")
-                except:
-                    print(f"{danger}Can not delete task with id {task_id}{end_part}")
-                finally:
-                    connection.close()
+                cursor.execute(query)
+                connection.commit()
+                print(f"{success}Task delete successfully!{end_part}")
+                connection.close()
             else:
                 App.display_menu()
 
@@ -96,7 +88,7 @@ class Task:
                     (id integer PRIMARY KEY, name TEXT)""")
             connection.close()
             return True
-        except:
+        except sqlite3.DatabaseError:
             print(f"{danger}Can't create tasks table{end_part}")
             return False
 

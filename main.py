@@ -1,35 +1,16 @@
-# Import local modules
+import os
+import platform
 from builtins import staticmethod
-from style import *
 from category import *
 from result import *
 from task import *
-import config
-
-from typing import List, Any
-import os
-import platform
-import numpy as np
-import matplotlib.pyplot as plt
-import sqlite3
-from datetime import datetime
 
 
 class App:
     """ EVALUATOR ANALYZE YOUR DATA """
-
-    def __init__(self):
-        Task.create_table()
-        Result.create_table()
-        Task.tasks_count = Task.get_count()
-
     @staticmethod
     def display_menu():
-        """
-            HERE WE DISPLAY A MENU;
-            USER SHOULD BE ABLE TO CHOOSE AN ITEM IN MENU
-            AND WE SHOULD DISPLAY SOMETHING IN EXCHANGE!
-        """
+        """ display a menu to choose operations """
         response = input(f"""    1) SHOW TASKS
     2) DELETE TASK
     3) ADD A NEW TASK
@@ -81,7 +62,11 @@ class App:
         elif platform.system() == "Linux":
             os.system('clear')
 
+
 if __name__ == "__main__":
+    Task.create_table()
+    Result.create_table()
+    Task.tasks_count = Task.get_count()
     continue_app = True
     plt.rcdefaults()
     while continue_app:
