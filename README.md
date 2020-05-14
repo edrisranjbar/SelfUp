@@ -18,7 +18,7 @@ Because I think this project worth to spread and also it helps others to make th
 - [x] response based on menu item
 - [x] display progress in graphical chart 
 - [x] show messages with proper color
-- [ ] code refoctor
+- [x] code refactor
 - [x] show 'There is no task' if no task is available
 - [x] show 'There is no result' if no result is available
 - [x] prevent closing app except user says so
@@ -30,5 +30,6 @@ Because I think this project worth to spread and also it helps others to make th
 - [x] create menu for **category management**
 - [x] go back to menue if user typed "y"
 - [x] clear screen (consider different type of Operating Systems)
-- [ ] add welcome screeen (using pyfiglet or etc.)
-- [ ] 
+- [ ] add welcome screen (using pyfiglet)
+- [ ] write a rest API
+- [ ] prevent saving more than one data for a single day
