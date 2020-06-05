@@ -1,8 +1,16 @@
 from flask import Flask, jsonify, request
 
-from core.task import *
+from task import *
+from category import *
+from result import *
 
 if __name__ == "__main__":
+
+    # creating tables if not exists
+    Task.create_table()
+    Result.create_table()
+    Category.create_table()
+
     app = Flask(__name__)
 
     @app.route('/')
