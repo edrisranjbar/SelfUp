@@ -2,8 +2,8 @@ from sqlite3 import *
 from datetime import datetime
 from matplotlib import pyplot as plt
 import numpy as np
-from task import Task
-import config
+from core.task import Task
+from core import config
 
 
 class Result:

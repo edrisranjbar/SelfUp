@@ -1,5 +1,5 @@
 import sqlite3
-import config
+from core import config
 from typing import List, Any
 
 

@@ -1,7 +1,7 @@
 from sqlite3 import *
 from typing import List, Any
 
-import config
+from core import config
 
 
 class Category:
