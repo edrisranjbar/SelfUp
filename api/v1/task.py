@@ -96,3 +96,24 @@ class Task:
         cursor.execute(query)
         connection.commit()
         connection.close()
+
+    @staticmethod
+    def get(task_id):
+        """ gets a atsk id and returns task details """
+        conn = sqlite3.connect(config.db_file)
+        query = f"SELECT * FROM tasks WHERE id={task_id}"
+        task = conn.execute(query).fetchone()
+        conn.close()
+        task_dict = {'id': task[0], 'name': task[1]}
+        return task_dict
+
+    @staticmethod
+    def task_exist(task_id):
+        conn = sqlite3.connect(config.db_file)
+        query = f"SELECT COUNT (*) FROM tasks WHERE id={task_id}"
+        count = conn.execute(query).fetchone()[0]
+        conn.close()
+        if count > 0:
+            return True
+        else:
+            return False
