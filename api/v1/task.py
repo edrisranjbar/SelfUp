@@ -7,6 +7,13 @@ class Task:
     """ handle tasks """
 
     @staticmethod
+    def is_task_name_valid(task_name):
+        if task_name is None or len(task_name) > 100:
+            return False
+        else:
+            return True
+
+    @staticmethod
     def add(task):
         """ ADD A SINGLE TASK """
         connection = sqlite3.connect(config.db_file)
@@ -108,7 +115,7 @@ class Task:
         return task_dict
 
     @staticmethod
-    def task_exist(task_id):
+    def exist(task_id):
         conn = sqlite3.connect(config.db_file)
         query = f"SELECT COUNT (*) FROM tasks WHERE id={task_id}"
         count = conn.execute(query).fetchone()[0]
@@ -117,3 +124,13 @@ class Task:
             return True
         else:
             return False
+
+    @staticmethod
+    def update(task_id, task_name):
+        print(task_name,"\n\n")
+        connection = sqlite3.connect(config.db_file)
+        cursor = connection.cursor()
+        query = f"UPDATE tasks SET name='{task_name}' WHERE id={task_id}"
+        cursor.execute(query)
+        connection.commit()
+        return True

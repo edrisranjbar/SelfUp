@@ -36,13 +36,25 @@ if __name__ == "__main__":
 
     @app.route('/task/update/<task_id>', methods=["POST"])
     def update_task(task_id):
-        # TODO: create update method in task class
-        # TODO: return a proper message with result as a boolean
-        pass
+        task_name = request.values.get('task_name')
+        valid = Task.exist(task_id)
+        update_status = Task.update(task_id, task_name)
+        if valid:
+            if update_status:
+                return jsonify(status=update_status), 200
+            else:
+                return jsonify(status=update_status), 400
+        else:
+            return jsonify(status=update_status), 404
 
-    @app.route('/task/add', methods=["POST"])
+    @app.route('/task/add', methods=['GET', 'POST'])
     def add_task():
-        Task.add(request.task)
-        # TODO: return result and if there is an error; send it
+        task_name = request.values.get('task_name')
+        valid = Task.is_task_name_valid(task_name)
+        if valid:
+            add_task_status = Task.add(task_name)
+            return jsonify(status=add_task_status), 200
+        else:
+            return jsonify(status=False), 400
 
     app.run(debug=True)
