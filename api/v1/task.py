@@ -1,22 +1,26 @@
 import sqlite3
 import config
-from style import *
 from typing import List, Any
-from main import App
 
 
 class Task:
     """ handle tasks """
+
+    @staticmethod
+    def is_task_name_valid(task_name):
+        if task_name is None or len(task_name) > 100:
+            return False
+        else:
+            return True
+
     @staticmethod
     def add(task):
         """ ADD A SINGLE TASK """
-        App.clear()
         connection = sqlite3.connect(config.db_file)
         cursor = connection.cursor()
         query = f'INSERT INTO tasks (name) VALUES ("{task}")'
         cursor.execute(query)
         connection.commit()
-        print(f"{success}Task added successfully!{end_part}")
         connection.close()
         return True
 
@@ -32,7 +36,6 @@ class Task:
     @staticmethod
     def show_all(limit=None):
         """ RETURNS ALL TASKS """
-        App.clear()
         conn = sqlite3.connect(config.db_file)
         if limit is not None:
             query = "SELECT * FROM tasks LIMIT {}".format(limit)
@@ -45,7 +48,7 @@ class Task:
             print(task_id, name)
         conn.close()
         if counter < 1:
-            print(f"{danger}There is no task available!{end_part}")
+            print("There is no task available!")
             return False
         return True
 
@@ -59,26 +62,26 @@ class Task:
             query = "SELECT * FROM tasks"
         tasks: List[Any] = connection.execute(query).fetchall()
         connection.close()
-        return tasks
+        the_tasks = []
+        for task in tasks:
+            task_dict = {'id': task[0], 'name': task[1]}
+            the_tasks.append(task_dict)
+        return the_tasks
 
     @staticmethod
-    def delete():
+    def delete(task_id):
         """ DELETE A SINGLE TASK BASED ON ID """
-        # Show tasks and their ids
-        App.clear()
         there_is_task = Task.show_all()
         if there_is_task:
-            task_id = input(f"TYPE TASK ID TO REMOVE: {warning}(Enter b to back){end_part} ")
-            if task_id != "b":
-                connection = sqlite3.connect(config.db_file)
-                cursor = connection.cursor()
-                query = f'DELETE FROM tasks WHERE id="{task_id}"'
-                cursor.execute(query)
-                connection.commit()
-                print(f"{success}Task delete successfully!{end_part}")
-                connection.close()
-            else:
-                App.display_menu()
+            connection = sqlite3.connect(config.db_file)
+            cursor = connection.cursor()
+            query = f'DELETE FROM tasks WHERE id="{task_id}"'
+            cursor.execute(query)
+            connection.commit()
+            connection.close()
+            return True
+        else:
+            return False
 
     @staticmethod
     def create_table():
@@ -89,7 +92,7 @@ class Task:
             connection.close()
             return True
         except sqlite3.DatabaseError:
-            print(f"{danger}Can't create tasks table{end_part}")
+            print(f"Can't create tasks table")
             return False
 
     @staticmethod
@@ -100,3 +103,33 @@ class Task:
         cursor.execute(query)
         connection.commit()
         connection.close()
+
+    @staticmethod
+    def get(task_id):
+        """ gets a atsk id and returns task details """
+        conn = sqlite3.connect(config.db_file)
+        query = f"SELECT * FROM tasks WHERE id={task_id}"
+        task = conn.execute(query).fetchone()
+        conn.close()
+        task_dict = {'id': task[0], 'name': task[1]}
+        return task_dict
+
+    @staticmethod
+    def exist(task_id):
+        conn = sqlite3.connect(config.db_file)
+        query = f"SELECT COUNT (*) FROM tasks WHERE id={task_id}"
+        count = conn.execute(query).fetchone()[0]
+        conn.close()
+        if count > 0:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def update(task_id, task_name):
+        connection = sqlite3.connect(config.db_file)
+        cursor = connection.cursor()
+        query = f"UPDATE tasks SET name='{task_name}' WHERE id={task_id}"
+        cursor.execute(query)
+        connection.commit()
+        return True
