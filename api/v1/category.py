@@ -47,6 +47,19 @@ class Category:
         return True
 
     @staticmethod
+    def update(category_id, category_name, description=""):
+        connection = sqlite3.connect(config.db_file)
+        cursor = connection.cursor()
+        if description is None:
+            query = f"UPDATE category SET name='{category_name}' WHERE id={category_id}"
+        else:
+            query = f"UPDATE category SET name='{category_name}', description='{description}' WHERE id={category_id}"
+        cursor.execute(query)
+        connection.commit()
+        return True
+
+
+    @staticmethod
     def get_all():
         """ Get all of categories and returns an Array """
         connection = connect(config.db_file)

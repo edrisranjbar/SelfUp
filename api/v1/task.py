@@ -127,7 +127,6 @@ class Task:
 
     @staticmethod
     def update(task_id, task_name):
-        print(task_name,"\n\n")
         connection = sqlite3.connect(config.db_file)
         cursor = connection.cursor()
         query = f"UPDATE tasks SET name='{task_name}' WHERE id={task_id}"
