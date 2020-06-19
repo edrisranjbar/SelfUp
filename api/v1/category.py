@@ -19,17 +19,26 @@ class Category:
         return True
 
     @staticmethod
+    def exist(id):
+        conn = connect(config.db_file)
+        query = f"SELECT COUNT (*) FROM category WHERE id={id}"
+        count = conn.execute(query).fetchone()[0]
+        conn.close()
+        if count > 0:
+            return True
+        else:
+            return False
+
+    @staticmethod
     def add(name, description):
         """ Add a new category with some details """
-        try:
-            connection = connect(config.db_file)
-            cursor = connection.cursor()
-            cursor.execute(f'INSERT INTO category (name,description) VALUES ("{name}","{description}")')
-            connection.commit()
-            connection.close()
-            return True
-        except Error:
-            return False
+        connection = connect(config.db_file)
+        cursor = connection.cursor()
+        cursor.execute(f'INSERT INTO category (name,description) VALUES ("{name}","{description}")')
+        connection.commit()
+        connection.close()
+        return True
+
 
     @staticmethod
     def delete(category_id):
@@ -48,7 +57,7 @@ class Category:
 
     @staticmethod
     def update(category_id, category_name, description=""):
-        connection = sqlite3.connect(config.db_file)
+        connection = connect(config.db_file)
         cursor = connection.cursor()
         if description is None:
             query = f"UPDATE category SET name='{category_name}' WHERE id={category_id}"
@@ -70,4 +79,8 @@ class Category:
             return False
         finally:
             connection.close()
-        return categories
+        categories_array = []
+        for category in categories:
+            category_dict = {'id': category[0], 'name': category[1], 'description': category[2]}
+            categories_array.append(category_dict)
+        return categories_array
