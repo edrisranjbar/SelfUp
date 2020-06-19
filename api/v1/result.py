@@ -1,72 +1,9 @@
 from sqlite3 import *
-from datetime import datetime
-from matplotlib import pyplot as plt
-import numpy as np
-from task import Task
+
 import config
 
 
 class Result:
-    @staticmethod
-    def do_we_have_result():
-        """ returns True or False """
-        connection = connect(config.db_file)
-        query = "SELECT COUNT(*) FROM results"
-        cursor = connection.cursor()
-        results = cursor.execute(query).fetchone()
-        for result_count in results:
-            if result_count > 0:
-                return True
-            else:
-                return False
-
-    @staticmethod
-    def show_lasts(limit):
-        """RETURNS A GRAPHICAL CHART OF LAST RESULTS"""
-        conn = connect(config.db_file)
-        query = "SELECT * FROM results LIMIT {}".format(limit)
-        results = conn.execute(query).fetchall()
-        ranks = []
-        dates = []
-        counter = 0
-        for result_id, rank, date in results:
-            ranks.append(rank)
-            dates.append(date)
-            counter += 1
-        conn.close()
-
-        if counter > 0:
-            # DISPLAY RESULTS IN A CHART
-            y_pos = np.arange(len(results))
-
-            plt.bar(y_pos, ranks, align='center', alpha=0.5)
-            plt.xticks(y_pos, dates)
-            plt.ylabel('LAST RESULTS')
-            plt.title('last results')
-            plt.show()
-
-    @staticmethod
-    def add_today_results():
-        """ this method will add today's analyze results """
-        answers = []
-        rank = 0
-        percentage_per_task = 100 / Task.get_count()
-        tasks = Task.get_all()
-        for task_id, name in tasks:
-            task = name
-            answer = input("Did you " + task + "? " + "(y or n) ")
-            answers.append(answer)
-            if answer == "y":
-                rank += percentage_per_task
-            elif answer != "y" and answer != "n":
-                while answer != "y" and answer != "n":
-                    print("please answer with y or n!")
-                    answer = input(f"Did you {task} ? (y or n)")
-        rank = round(rank, 2)
-        print(f"You've done {str(rank)}% of your tasks!")
-        # insert result into results table
-        date = datetime.now().strftime("%Y/%m/%d")
-        Result.insert_result(rank, date)
 
     @staticmethod
     def create_table():
@@ -77,22 +14,76 @@ class Result:
         return True
 
     @staticmethod
-    def insert_result(result, date):
+    def get_all(limit=None):
+        connection = connect(config.db_file)
+        if limit is not None:
+            query = "SELECT * FROM results LIMIT {}".format(limit)
+        else:
+            query = "SELECT * FROM results"
+        results = connection.execute(query).fetchall()
+        connection.close()
+        the_results = []
+        for result in results:
+            result_dict = {'id': result[0], 'result': result[1], 'date': result[2]}
+            the_results.append(result_dict)
+        return the_results
+
+    @staticmethod
+    def count():
+        """ returns True or False """
+        connection = connect(config.db_file)
+        query = "SELECT COUNT(*) FROM results"
+        cursor = connection.cursor()
+        results = cursor.execute(query).fetchone()
+        for result_count in results:
+            return result_count
+
+    @staticmethod
+    def exist(result_id):
+        connection = connect(config.db_file)
+        query = f"SELECT COUNT (*) FROM results WHERE id={result_id}"
+        count = connection.execute(query).fetchone()[0]
+        connection.close()
+        if count > 0:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def add(result, date):
         connection = connect(config.db_file)
         cursor = connection.cursor()
         query = f'INSERT INTO results (result,date) VALUES ("{result}","{date}")'
+        try:
+            cursor.execute(query)
+            connection.commit()
+            connection.close()
+            return True
+        except:
+            return False
+
+    @staticmethod
+    def delete(result_id):
+        """ DELETE A SINGLE result BASED ON ID """
+        connection = connect(config.db_file)
+        cursor = connection.cursor()
+        query = f'DELETE FROM results WHERE id="{result_id}"'
         cursor.execute(query)
         connection.commit()
         connection.close()
+        return True
 
     @staticmethod
-    def delete_last_result():
-        """ Delete last result """
-        if Result.do_we_have_result():
+    def update(result_id, result, date):
+        if Result.exist(result_id):
             connection = connect(config.db_file)
             cursor = connection.cursor()
-            query = "delete from results where id= (select id from results order by id desc limit 1);"
-            cursor.execute(query)
-            connection.commit()
+            query = f"UPDATE results SET result='{result}', date='{date}' WHERE id={result_id}"
+            try:
+                cursor.execute(query)
+                connection.commit()
+                return True
+            except:
+                return False
         else:
-            print("There is no result to delete!")
+            return False

@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, abort
-
+from config import *
 from task import *
 from category import *
 from result import *
@@ -13,9 +13,11 @@ if __name__ == "__main__":
 
     app = Flask(__name__)
 
+
     @app.route('/about')
     def about():
-        return jsonify(message=config.about), 200
+        return jsonify(message=about)
+
 
     @app.route('/task/all')
     def tasks():
@@ -26,42 +28,45 @@ if __name__ == "__main__":
     def get_task(task_id):
         if Task.exist(task_id):
             task_details = Task.get(task_id)
-            return jsonify(task_details),200
+            return jsonify(task_details)
         else:
-            abort(404)
+            abort(400)
+
 
     @app.route('/task/delete/<task_id>', methods=["GET"])
     def delete_task(task_id):
-        return jsonify(result=Task.delete(task_id))
+        if Task.exist(task_id):
+            return jsonify(result=Task.delete(task_id))
+        else:
+            abort(400)
+
 
     @app.route('/task/update/<task_id>', methods=["PUT"])
     def update_task(task_id):
         task_name = request.values.get('task_name')
-        valid = Task.exist(task_id)
         update_status = Task.update(task_id, task_name)
-        if valid:
-            if update_status:
-                return jsonify(status=update_status), 200
-            else:
-                return jsonify(status=update_status), 400
+        if Task.exist(task_id):
+            return jsonify(status=update_status)
         else:
-            return jsonify(status=update_status), 404
+            return abort(400)
+
 
     @app.route('/task/add', methods=['POST'])
     def add_task():
         task_name = request.values.get('task_name')
-        valid = Task.is_task_name_valid(task_name)
-        if valid:
+        if Task.is_task_name_valid(task_name):
             add_task_status = Task.add(task_name)
-            return jsonify(status=add_task_status), 200
+            return jsonify(status=add_task_status)
         else:
-            return jsonify(status=False), 400
+            return abort(400)
+
 
     # Category routes
     @app.route('/category/all')
     def get_categories():
         categories = Category.get_all()
-        return jsonify(categories=categories), 200
+        return jsonify(categories=categories)
+
 
     @app.route('/category/add', methods=["POST"])
     def add_category():
@@ -69,35 +74,58 @@ if __name__ == "__main__":
         description = request.values.get('description')
         add_status = Category.add(name, description)
         if add_status:
-            return jsonify(status=add_status), 200
+            return jsonify(status=add_status)
         else:
-            return jsonify(status=add_status), 400
+            abort(400)
+
 
     @app.route('/category/delete/<id>')
-    def delete_category(id):
+    def delete_category(category_id):
         # check if category exists
-        if Category.exist(id):
-            delete_status = Category.delete(id)
-            if delete_status:
-                return jsonify(status=delete_status), 200
-            else:
-                return jsonify(status=delete_status), 400
+        if Category.exist(category_id):
+            delete_status = Category.delete(category_id)
+            return jsonify(status=delete_status)
         else:
-            return jsonify(status=False), 404
+            abort(400)
 
 
     @app.route('/category/update/<category_id>', methods=["PUT"])
     def update_category(category_id):
         # check if category exist
         if Category.exist(category_id):
-            name = request.values.get('name')
-            description = request.values.get('description')
-            update_status = Category.update(category_id, name, description)
-            if update_status:
-                return jsonify(status=update_status), 200
-            else:
-                return jsonify(status=update_status), 400
+            result = request.values.get('result')
+            description = request.values.get('date')
+            update_status = Category.update(category_id, result, description)
+            return jsonify(status=update_status)
         else:
-            return jsonify(status=False), 404
+            abort(400)
+
+
+    # Result
+    @app.route('/result/add', methods=["POST"])
+    def get_result():
+        result = request.values.get('result')
+        date = request.values.get('date')
+        add_status = Result.add(result, date)
+        return jsonify(status=add_status)
+
+
+    @app.route('/result/delete/<result_id>')
+    def delete_result(result_id):
+        return jsonify(status=Result.delete(result_id))
+
+
+    @app.route('/result/update/<result_id>', methods=["PUT"])
+    def update_result(result_id):
+        result = request.values.get('result')
+        date = request.values.get('date')
+        return jsonify(status=Result.update(result_id, result, date))
+
+
+    @app.route('/result/all')
+    def get_all_results():
+        results = Result.get_all()
+        return jsonify(results=results)
+
 
     app.run(debug=True)
