@@ -29,14 +29,12 @@ class Result:
         return the_results
 
     @staticmethod
-    def count():
-        """ returns True or False """
-        connection = connect(config.db_file)
-        query = "SELECT COUNT(*) FROM results"
-        cursor = connection.cursor()
-        results = cursor.execute(query).fetchone()
-        for result_count in results:
-            return result_count
+    def get_count():
+        conn = connect(config.db_file)
+        query = "SELECT count(*) FROM results"
+        count = conn.execute(query).fetchone()[0]
+        conn.close()
+        return count
 
     @staticmethod
     def exist(result_id):

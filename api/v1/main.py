@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, abort
+from flask_cors import CORS
 from config import *
 from task import *
 from category import *
@@ -12,6 +13,8 @@ if __name__ == "__main__":
     Category.create_table()
 
     app = Flask(__name__)
+    app.config['CORS_HEADERS'] = 'Content-Type'
+    CORS(app)
 
 
     @app.route('/about')
@@ -65,7 +68,7 @@ if __name__ == "__main__":
     @app.route('/category/all')
     def get_categories():
         categories = Category.get_all()
-        return jsonify(categories=categories)
+        return jsonify(categories=categories, categories_count=Category.get_count())
 
 
     @app.route('/category/add', methods=["POST"])
@@ -125,7 +128,7 @@ if __name__ == "__main__":
     @app.route('/result/all')
     def get_all_results():
         results = Result.get_all()
-        return jsonify(results=results)
+        return jsonify(results=results, results_count=Result.get_count())
 
 
     app.run(debug=True)

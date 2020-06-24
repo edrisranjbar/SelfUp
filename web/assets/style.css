@@ -1,0 +1,12 @@
+.border-left-info {
+    border-left: 0.25rem solid #36b9cc !important;
+}
+.border-left-success{
+    border-left: 0.25em solid #28a745!important;
+}
+.border-left-warning{
+    border-left: 0.25em solid #ffc107!important;
+}
+.border-left-primary{
+    border-left: 0.25em solid #007bff!important;
+}
