@@ -9,8 +9,15 @@ new Vue({
         categories_count: null,
         result_count: null,
         categories: [],
+        last_result: null,
         tasks: []
       }
+    },
+    methods:{
+        // removeCategory: function(item){
+            // TODO: remove api call
+            // document.getElementById("category_"+item.id).style.display = "none";
+        // }
     },
     mounted () {
         axios.all([
@@ -21,14 +28,15 @@ new Vue({
         .then(axios.spread((taskRes, resultRes, categoryRes) => {
             this.tasks_count = taskRes.data.tasks_count;
             this.categories_count = categoryRes.data.categories_count;
-            this.result_count = resultRes.data.result_count;
+            this.result_count = resultRes.data.results_count;
+            this.last_result = resultRes.data.results[0].result;
             let categories = categoryRes.data.categories;
             categories.forEach(element => {
-                this.categories.push({'name': element.name});
+                this.categories.push({'name': element.name, 'id': element.id, 'description':element.description});
             });
             let tasks = taskRes.data.tasks;
             tasks.forEach(element => {
-                this.tasks.push({'name': element.name});
+                this.tasks.push({'name': element.name, 'id': element.id});
             });
         }))
     }

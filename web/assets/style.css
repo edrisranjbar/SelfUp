@@ -10,3 +10,11 @@
 .border-left-primary{
     border-left: 0.25em solid #007bff!important;
 }
+ul{
+    margin: 0px;
+    padding: 5px;
+    list-style: none;
+}
+.fa-trash{
+    cursor: pointer;
+}
