@@ -1,3 +1,6 @@
+body{
+    font-family: 'Balsamiq Sans', cursive !important;
+}
 .border-left-info {
     border-left: 0.25rem solid #36b9cc !important;
 }

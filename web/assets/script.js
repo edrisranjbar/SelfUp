@@ -1,6 +1,8 @@
 let get_tasks_query = "http://127.0.0.1:5000/task/all";
 let get_results_query = "http://127.0.0.1:5000/result/all";
 let get_categories_query = "http://127.0.0.1:5000/category/all";
+let delete_category = "http://127.0.0.1:5000/category/delete/";
+let delete_task = "http://127.0.0.1:5000/task/delete/";
 new Vue({
     el: '#app',
     data () {
@@ -10,14 +12,36 @@ new Vue({
         result_count: null,
         categories: [],
         last_result: null,
-        tasks: []
+        tasks: [],
       }
     },
     methods:{
-        // removeCategory: function(item){
-            // TODO: remove api call
-            // document.getElementById("category_"+item.id).style.display = "none";
-        // }
+        deleteCategory:function(category){
+            axios.get(delete_category+category.id)
+            .then(function (response) {
+              // handle success
+              console.log(response);
+            })
+            .catch(function (error) {
+              // handle error
+              console.log(error);
+            })          
+            let category_id = "category_"+category.id;
+            document.getElementById(category_id).style.display = "none";
+        },
+        deleteTask:function(task){
+            axios.get(delete_task+task.id)
+            .then(function (response) {
+              // handle success
+              console.log(response);
+            })
+            .catch(function (error) {
+              // handle error
+              console.log(error);
+            })          
+            let task_id = "task_"+task.id;
+            document.getElementById(task_id).style.display = "none";
+        }
     },
     mounted () {
         axios.all([

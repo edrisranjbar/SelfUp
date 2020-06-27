@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="assets/font-awesome-4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container pt-2">
@@ -103,7 +105,7 @@
                         </div>
                         <div class="card-body">
                             <ul>
-                                <li v-for="task in tasks" class="bg-light text-dark p-2 shadow rounded mt-2"><i class="fa fa-trash mr-2"></i>{{task.name}}</li>
+                                <li v-for="task in tasks" :id="['task_'+ task.id]" class="bg-light text-dark p-2 shadow rounded mt-2"><i class="fa fa-trash mr-2" v-on:click="deleteTask(task)"></i>{{task.name}}</li>
                             </ul>
                         </div>
                     </div>
@@ -117,7 +119,7 @@
                         </div>
                         <div class="card-body">
                             <ul>
-                                <li v-for="category in categories" class="bg-light text-dark p-2 shadow rounded mt-2"><i class="fa fa-trash mr-2"></i>{{category.name}} <small>{{category.description}}</small></li>
+                                <li v-for="category in categories" :id="['category_'+ category.id]" class="bg-light text-dark p-2 shadow rounded mt-2"><i class="fa fa-trash mr-2" v-on:click="deleteCategory(category)"></i>{{category.name}} <small>{{category.description}}</small></li>
                             </ul>
                         </div>
                     </div>

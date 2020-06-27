@@ -82,7 +82,7 @@ if __name__ == "__main__":
             abort(400)
 
 
-    @app.route('/category/delete/<id>')
+    @app.route('/category/delete/<category_id>')
     def delete_category(category_id):
         # check if category exists
         if Category.exist(category_id):
