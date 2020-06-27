@@ -29,6 +29,15 @@ class Category:
         else:
             return False
 
+    
+    @staticmethod
+    def get_count():
+        conn = connect(config.db_file)
+        query = "SELECT count(*) FROM category"
+        count = conn.execute(query).fetchone()[0]
+        conn.close()
+        return count
+
     @staticmethod
     def add(name, description):
         """ Add a new category with some details """

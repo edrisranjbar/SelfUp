@@ -6,6 +6,3 @@ Hard question to answer; in fact I think this project will continue for long tim
 
 ## Why i share this project?
 Because I think this project worth to spread and also it helps others to make their own softwares like assitances and etc.
-
-# TODO
-- [ ] prevent saving more than one data for a single day
