@@ -57,6 +57,7 @@ if __name__ == "__main__":
     @app.route('/task/add', methods=['POST'])
     def add_task():
         task_name = request.values.get('task_name')
+        print(task_name)
         if Task.is_task_name_valid(task_name):
             add_task_status = Task.add(task_name)
             return jsonify(status=add_task_status)

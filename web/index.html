@@ -104,6 +104,16 @@
                             <h3 class="font-weight-bold text-light">Tasks</h3>
                         </div>
                         <div class="card-body">
+                            <!-- add input for task name -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="task_name" class="mt-1">Task name: </label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" name="task_name" id="task_name" class="form-control d-inline w-auto">
+                                    <button class="btn btn-sm btn-outline-success float-right" v-on:click="addTask()">Add</button>
+                                </div>
+                            </div>
                             <ul>
                                 <li v-for="task in tasks" :id="['task_'+ task.id]" class="bg-light text-dark p-2 shadow rounded mt-2"><i class="fa fa-trash mr-2" v-on:click="deleteTask(task)"></i>{{task.name}}</li>
                             </ul>
@@ -118,6 +128,26 @@
                             <h3 class="font-weight-bold text-light">Categories</h3>
                         </div>
                         <div class="card-body">
+                            <!-- add input for category name and description -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="category_name" class="mt-1">name: </label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" name="category_name" id="category_name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-3">
+                                    <label for="description">Description: </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <textarea name="category_description" id="category_description" class="form-control"></textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn btn-sm btn-outline-success" v-on:click="addCategory()">Add</button>
+                                </div>
+                            </div>
                             <ul>
                                 <li v-for="category in categories" :id="['category_'+ category.id]" class="bg-light text-dark p-2 shadow rounded mt-2"><i class="fa fa-trash mr-2" v-on:click="deleteCategory(category)"></i>{{category.name}} <small>{{category.description}}</small></li>
                             </ul>
