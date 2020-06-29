@@ -14,77 +14,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
+    <template id="widget-card-template">
+        <div class="card shadow h-100 py-1" :class="['border-left-'+color]">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <h6 class="font-weight-bold mb-2" :class="['text-'+color]">{{title}}</h6>
+                        <div class="ml-3 h6 mb-0 text-gray-800">
+                            {{content}}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa fa-2x text-gray-300" :class="['fa-'+icon]"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
     <div class="container pt-2">
         <main id="app">
             <img src="images/self evaluator.png" alt="Self evaluator" height="100px">
             <div class="row">
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <h6 class="font-weight-bold text-success mb-2">Tasks</h6>
-                                    <div class="ml-3 h6 mb-0 text-gray-800">
-                                        {{tasks_count}}
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fa fa-list fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <widget-card title="Tasks" :content="tasks_count" color="success" icon="list" ></widget-card>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <h6 class="font-weight-bold text-info mb-2">Categories</h6>
-                                    <div class="ml-3 h6 mb-0 text-gray-800">
-                                        {{categories_count}}
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fa fa-list fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <widget-card title="Categories" :content="categories_count" color="info" icon="list" ></widget-card>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <h6 class="font-weight-bold text-warning mb-2">Results</h6>
-                                    <div class="ml-3 h6 mb-0 text-gray-800">
-                                        {{result_count}}
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fa fa-star fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <widget-card title="Results" :content="result_count" color="warning" icon="star" ></widget-card>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <h6 class="font-weight-bold text-primary mb-2">Last Record</h6>
-                                    <div class="ml-3 h6 mb-0 text-gray-800">
-                                        {{last_result}}%
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fa fa-bar-chart fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <widget-card title="Last record" :content="last_result" color="primary" icon="bar-chart" ></widget-card>
                 </div>
             </div>
 
