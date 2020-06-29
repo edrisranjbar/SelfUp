@@ -47,8 +47,8 @@ if __name__ == "__main__":
     @app.route('/task/update/<task_id>', methods=["PUT"])
     def update_task(task_id):
         task_name = request.values.get('task_name')
-        update_status = Task.update(task_id, task_name)
         if Task.exist(task_id):
+            update_status = Task.update(task_id, task_name)
             return jsonify(status=update_status)
         else:
             return abort(400)

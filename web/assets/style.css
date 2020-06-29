@@ -21,3 +21,6 @@ ul{
 .fa-trash{
     cursor: pointer;
 }
+.modal{
+    display: unset !important;
+}
