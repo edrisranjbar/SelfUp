@@ -7,6 +7,7 @@ let delete_task = API_URL + "task/delete/";
 let add_task = API_URL + "task/add";
 let add_category = API_URL + "category/add";
 let update_task = API_URL + "task/update/";
+let update_category = API_URL + "category/update/";
 
 Vue.component('widget-card',{
   props: ['title', 'content', 'icon', 'color'],
@@ -24,7 +25,9 @@ new Vue({
         last_result: null,
         tasks: [],
         show_task_modal: false,
+        show_category_modal: false,
         current_task_id: null,
+        current_category_id: null,
       }
     },
     methods:{
@@ -39,6 +42,19 @@ new Vue({
         }).catch(function(error) {
           console.log(error);
         })
+      },
+      updatecategory:function() {
+        let category_name = document.getElementById('new_category_name').value;
+        let category_description = document.getElementById('new_category_description').value;
+        axios.put(update_category+this.current_category_id,`name=${category_name}&description=${category_description}`).then(function(response) {
+          console.log(response);
+        }).catch(function(error) {
+          console.log(error);
+        })
+      },
+      showCategoryUpdateModal:function(category_id) {
+        this.current_category_id = category_id;
+        this.show_category_modal = true;
       },
       addTask:function() {
         let task_name = document.querySelector('#task_name').value;
