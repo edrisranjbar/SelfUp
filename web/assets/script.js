@@ -1,10 +1,17 @@
-let get_tasks_query = "http://127.0.0.1:5000/task/all";
-let get_results_query = "http://127.0.0.1:5000/result/all";
-let get_categories_query = "http://127.0.0.1:5000/category/all";
-let delete_category = "http://127.0.0.1:5000/category/delete/";
-let delete_task = "http://127.0.0.1:5000/task/delete/";
-let add_task = "http://127.0.0.1:5000/task/add";
-let add_category = "http://127.0.0.1:5000/category/add";
+const API_URL = "http://127.0.0.1:5000/"; 
+let get_tasks_query = API_URL + "task/all";
+let get_results_query = API_URL + "result/all";
+let get_categories_query = API_URL + "category/all";
+let delete_category = API_URL + "category/delete/";
+let delete_task = API_URL + "task/delete/";
+let add_task = API_URL + "task/add";
+let add_category = API_URL + "category/add";
+
+Vue.component('widget-card',{
+  props: ['title', 'content', 'icon', 'color'],
+  template: '#widget-card-template'
+})
+
 new Vue({
     el: '#app',
     data () {
