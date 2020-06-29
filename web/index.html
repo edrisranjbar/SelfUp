@@ -76,11 +76,37 @@
                                 </div>
                             </div>
                             <ul>
-                                <li v-for="task in tasks" :id="['task_'+ task.id]" class="bg-light text-dark p-2 shadow rounded mt-2"><i class="fa fa-trash mr-2" v-on:click="deleteTask(task)"></i>{{task.name}}</li>
+                                <li v-for="task in tasks" :id="['task_'+ task.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
+                                    <i class="fa fa-trash mr-2" v-on:click="deleteTask(task)"></i>
+                                    <span v-on:click="showTaskUpdateModal(task.id)">{{task.name}}</span>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
+                <!-- Update task: modal -->
+                <div class="modal" id="taskModal" role="dialog" v-if="show_task_modal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Update Task</h5>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="form-group">
+                              <label for="new_task_name" class="col-form-label">Task name:</label>
+                              <input type="text" class="form-control" id="new_task_name">
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" v-on:click="show_task_modal=false">Close</button>
+                          <button type="button" class="btn btn-primary" v-on:click="updateTask()">Update</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- End task:modal -->
 
                 <!-- Categories -->
                 <div class="col-md-6">
