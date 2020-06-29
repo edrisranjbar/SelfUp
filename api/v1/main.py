@@ -97,9 +97,9 @@ if __name__ == "__main__":
     def update_category(category_id):
         # check if category exist
         if Category.exist(category_id):
-            result = request.values.get('result')
-            description = request.values.get('date')
-            update_status = Category.update(category_id, result, description)
+            name = request.values.get('name')
+            description = request.values.get('description')
+            update_status = Category.update(category_id, name, description)
             return jsonify(status=update_status)
         else:
             abort(400)

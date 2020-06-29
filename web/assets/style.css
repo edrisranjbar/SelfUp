@@ -24,3 +24,6 @@ ul{
 .modal{
     display: unset !important;
 }
+.link{
+    cursor: pointer;
+}
