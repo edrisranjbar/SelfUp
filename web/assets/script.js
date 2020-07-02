@@ -14,7 +14,7 @@ Vue.component('widget-card',{
   template: '#widget-card-template'
 })
 
-new Vue({
+let vue = new Vue({
     el: '#app',
     data () {
       return {
@@ -24,6 +24,7 @@ new Vue({
         categories: [],
         last_result: null,
         tasks: [],
+        results: [],
         show_task_modal: false,
         show_category_modal: false,
         current_task_id: null,
@@ -98,6 +99,16 @@ new Vue({
           })          
           let task_id = "task_"+task.id;
           document.getElementById(task_id).style.display = "none";
+      },
+      get_dates: function(){
+        dates = [];
+        this.results.forEach(elem=>{dates.push(elem.date)});
+        return dates;
+      },
+      get_ranks: function(){
+        ranks = [];
+        this.results.forEach(elem=>{ranks.push(elem.result)});
+        return ranks;
       }
     },
     mounted () {
@@ -110,6 +121,7 @@ new Vue({
             this.tasks_count = taskRes.data.tasks_count;
             this.categories_count = categoryRes.data.categories_count;
             this.result_count = resultRes.data.results_count;
+            this.results = resultRes.data.results;
             let last_result_index = resultRes.data.results.length -1;
             this.last_result = resultRes.data.results[last_result_index].result;
             let categories = categoryRes.data.categories;
@@ -120,6 +132,20 @@ new Vue({
             tasks.forEach(element => {
                 this.tasks.push({'name': element.name, 'id': element.id});
             });
+            let dates = vue.get_dates();
+            let ranks = vue.get_ranks();
+            let chartPlace = document.getElementById('myChart').getContext('2d');
+            let chart = new Chart(chartPlace, {
+              type: 'line',
+              data: {
+                  labels: dates,
+                  datasets: [{
+                      label: 'Rank',
+                      backgroundColor: 'rgba(100, 255, 132,0.5)',
+                      data: ranks
+                  }]
+              },
+          });
         }))
     }
 })
