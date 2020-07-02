@@ -110,7 +110,8 @@ new Vue({
             this.tasks_count = taskRes.data.tasks_count;
             this.categories_count = categoryRes.data.categories_count;
             this.result_count = resultRes.data.results_count;
-            this.last_result = resultRes.data.results[0].result;
+            let last_result_index = resultRes.data.results.length -1;
+            this.last_result = resultRes.data.results[last_result_index].result;
             let categories = categoryRes.data.categories;
             categories.forEach(element => {
                 this.categories.push({'name': element.name, 'id': element.id, 'description':element.description});
