@@ -27,3 +27,6 @@ ul{
 .link{
     cursor: pointer;
 }
+.tasks img, .categories img{
+    opacity: 0.6;
+}

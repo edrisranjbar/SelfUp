@@ -20,10 +20,8 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <h6 class="font-weight-bold mb-2" :class="['text-'+color]">{{title}}</h6>
-                        <div class="ml-3 h6 mb-0 text-gray-800">
-                            {{content}}
-                        </div>
+                        <h6 class="font-weight-bold mb-2" :class="['text-'+color]" v-text="title"></h6>
+                        <div class="ml-3 h6 mb-0 text-gray-800" v-text="content"></div>
                     </div>
                     <div class="col-auto">
                         <i class="fa fa-2x text-gray-300" :class="['fa-'+icon]"></i>
@@ -58,10 +56,12 @@
                     </div>
                 </div>
             </div>
+            <!-- END Progress chart -->
+
             <div class="row mt-3">
                 <!-- Tasks -->
                 <div class="col-md-6">
-                    <div class="card shadow p-0">
+                    <div class="card tasks shadow p-0">
                         <div class="card-header bg-info">
                             <h3 class="font-weight-bold text-light">Tasks</h3>
                         </div>
@@ -69,17 +69,21 @@
                             <!-- add input for task name -->
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label for="task_name" class="mt-1">Task name: </label>
+                                    <label for="task_name" class="mt-1">Name: </label>
                                 </div>
-                                <div class="col-md-8">
-                                    <input type="text" name="task_name" id="task_name" class="form-control d-inline w-auto">
-                                    <button class="btn btn-sm btn-outline-success float-right" v-on:click="addTask()">Add</button>
+                                <div class="col-md-9">
+                                    <input type="text" name="task_name" id="task_name" class="form-control">
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn btn-sm btn-outline-success" @click="addTask()">Add</button>
                                 </div>
                             </div>
+
+                            <img src="images/tasks.png" alt="tasks" v-if="tasks_count < 1" height="300px" class="d-block mx-auto">
                             <ul>
                                 <li v-for="task in tasks" :id="['task_'+ task.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
-                                    <i class="fa fa-trash mr-2" v-on:click="deleteTask(task)"></i>
-                                    <span v-on:click="showTaskUpdateModal(task.id)" class="text-primary link">{{task.name}}</span>
+                                    <i class="fa fa-trash mr-2" @click="deleteTask(task)"></i>
+                                    <span @click="showTaskUpdateModal(task.id)" class="text-primary link" v-text="task.name"></span>
                                 </li>
                             </ul>
                         </div>
@@ -95,14 +99,14 @@
                         <div class="modal-body">
                           <form>
                             <div class="form-group">
-                              <label for="new_task_name" class="col-form-label">Task name:</label>
+                              <label for="new_task_name" class="col-form-label">Name:</label>
                               <input type="text" class="form-control" id="new_task_name">
                             </div>
                           </form>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" v-on:click="show_task_modal=false">Close</button>
-                          <button type="button" class="btn btn-primary" v-on:click="updateTask()">Update</button>
+                          <button type="button" class="btn btn-secondary" @click="show_task_modal=false">Close</button>
+                          <button type="button" class="btn btn-primary" @click="updateTask()">Update</button>
                         </div>
                       </div>
                     </div>
@@ -111,7 +115,7 @@
 
                 <!-- Categories -->
                 <div class="col-md-6">
-                    <div class="card shadow p-0">
+                    <div class="card categories shadow p-0">
                         <div class="card-header bg-info">
                             <h3 class="font-weight-bold text-light">Categories</h3>
                         </div>
@@ -119,7 +123,7 @@
                             <!-- add input for category name and description -->
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label for="category_name" class="mt-1">name: </label>
+                                    <label for="category_name" class="mt-1">Name: </label>
                                 </div>
                                 <div class="col-md-9">
                                     <input type="text" name="category_name" id="category_name" class="form-control">
@@ -133,49 +137,50 @@
                                     <textarea name="category_description" id="category_description" class="form-control"></textarea>
                                 </div>
                                 <div class="col-md-12">
-                                    <button class="btn btn-sm btn-outline-success" v-on:click="addCategory()">Add</button>
+                                    <button class="btn btn-sm btn-outline-success" @click="addCategory()">Add</button>
                                 </div>
                             </div>
+                            <img src="images/categories.png" alt="categories" v-if="categories_count < 1" height="300px" class="d-block mx-auto">
                             <ul>
                                 <li v-for="category in categories" :id="['category_'+ category.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
-                                    <i class="fa fa-trash mr-2" v-on:click="deleteCategory(category)"></i>
-                                    <span class="text-primary link" v-on:click="showCategoryUpdateModal(category.id)">{{category.name}}</span> <small>{{category.description}}</small>
+                                    <i class="fa fa-trash mr-2" @click="deleteCategory(category)"></i>
+                                    <span class="text-primary link" @click="showCategoryUpdateModal(category.id)" v-text="category.name"></span> <small v-text="category.description"></small>
                                 </li>
                             </ul>
-                        </div>
-                <!-- Update task: modal -->
-                <div class="modal" id="categoryModal" v-if="show_category_modal">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title">Update Category</h5>
-                        </div>
-                        <div class="modal-body">
-                          <form>
-                            <div class="form-group">
-                              <label for="new_category_name" class="col-form-label">Category name:</label>
-                              <input type="text" class="form-control" id="new_category_name">
                             </div>
-                            <div class="form-group">
-                                <label for="new_category_description" class="col-form-label">Category description:</label>
-                                <textarea class="form-control" id="new_category_description"></textarea>
-                              </div>
-                          </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" v-on:click="show_category_modal=false">Close</button>
-                          <button type="button" class="btn btn-primary" v-on:click="updatecategory()">Update</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <!-- End category:modal -->
+                            <!-- Update task: modal -->
+                            <div class="modal" id="categoryModal" v-if="show_category_modal">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title">Update Category</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                        <label for="new_category_name" class="col-form-label">Name:</label>
+                                        <input type="text" class="form-control" id="new_category_name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="new_category_description" class="col-form-label">Description:</label>
+                                            <textarea class="form-control" id="new_category_description"></textarea>
+                                        </div>
+                                    </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" @click="show_category_modal=false">Close</button>
+                                    <button type="button" class="btn btn-primary" @click="updatecategory()">Update</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <!-- End category:modal -->
                     </div>
                 </div>
             </div>
         </main>
         <footer class="mt-4">
-            <p class="copyright text-center">Desined by<a href="https://edrisranjbar.ir">Edris Ranjbar</a></p>
+            <p class="copyright text-center">Desined by <a href="https://edrisranjbar.ir">Edris Ranjbar</a></p>
         </footer>
     </div>
     <script src="assets/script.js"></script>
