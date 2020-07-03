@@ -14,11 +14,11 @@ class Task:
             return True
 
     @staticmethod
-    def add(task):
+    def add(task, category_id):
         """ ADD A SINGLE TASK """
         connection = sqlite3.connect(config.db_file)
         cursor = connection.cursor()
-        query = f'INSERT INTO tasks (name) VALUES ("{task}")'
+        query = f'INSERT INTO tasks (name, category_id) VALUES ("{task}",{category_id})'
         cursor.execute(query)
         connection.commit()
         connection.close()
@@ -64,7 +64,7 @@ class Task:
         connection.close()
         the_tasks = []
         for task in tasks:
-            task_dict = {'id': task[0], 'name': task[1]}
+            task_dict = {'id': task[0], 'name': task[1], 'category_id':task[2]}
             the_tasks.append(task_dict)
         return the_tasks
 
@@ -88,11 +88,11 @@ class Task:
         try:
             connection = sqlite3.connect(config.db_file)
             connection.execute("""CREATE TABLE IF NOT EXISTS tasks
-                    (id integer PRIMARY KEY, name TEXT)""")
+                    (id integer PRIMARY KEY, name TEXT, category_id integer, FOREIGN KEY(category_id) REFERENCES category(id))""")
             connection.close()
             return True
         except sqlite3.DatabaseError:
-            print(f"Can't create tasks table")
+            print("Can't create tasks table")
             return False
 
     @staticmethod
