@@ -38,20 +38,24 @@ let vue = new Vue({
       },
       updateTask:function() {
         let task_name = document.getElementById('new_task_name').value.trim();
-        axios.put(update_task+this.current_task_id,`task_name=${task_name}`).then(function(response) {
-          console.log(response);
-        }).catch(function(error) {
-          console.log(error);
-        })
+        if(task_name != ""){
+          axios.put(update_task+this.current_task_id,`task_name=${task_name}`).then(function(response) {
+            console.log(response);
+          }).catch(function(error) {
+            console.log(error);
+          })
+        }
       },
       updatecategory:function() {
         let category_name = document.getElementById('new_category_name').value.trim();
         let category_description = document.getElementById('new_category_description').value;
-        axios.put(update_category+this.current_category_id,`name=${category_name}&description=${category_description}`).then(function(response) {
-          console.log(response);
-        }).catch(function(error) {
-          console.log(error);
-        })
+        if(category_name != ""){
+          axios.put(update_category+this.current_category_id,`name=${category_name}&description=${category_description}`).then(function(response) {
+            console.log(response);
+          }).catch(function(error) {
+            console.log(error);
+          })
+        }
       },
       showCategoryUpdateModal:function(category_id) {
         this.current_category_id = category_id;
@@ -59,20 +63,24 @@ let vue = new Vue({
       },
       addTask:function() {
         let task_name = document.querySelector('#task_name').value.trim();
-        axios.post(add_task,`task_name=${task_name}`).then(function(response) {
-          console.log(response);
-        }).catch(function(error) {
-          console.log(error);
-        })
+        if(task_name != ""){
+          axios.post(add_task,`task_name=${task_name}`).then(function(response) {
+            console.log(response);
+          }).catch(function(error) {
+            console.log(error);
+          })
+        }
       },
       addCategory:function() {
         let category_name = document.querySelector('#category_name').value.trim();
         let description = document.querySelector('#category_description').value;
-        axios.post(add_category,`name=${category_name}&&description=${description}`).then(function(response) {
-          console.log(response);
-        }).catch(function(error) {
-          console.log(error);
-        })
+        if(category_name != ""){
+          axios.post(add_category,`name=${category_name}&&description=${description}`).then(function(response) {
+            console.log(response);
+          }).catch(function(error) {
+            console.log(error);
+          })
+        }
       },
       deleteCategory:function(category){
           axios.get(delete_category+category.id)
