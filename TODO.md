@@ -1,8 +1,16 @@
 # TO-DOs
 here's a list of all we have to do:
+_order by date added_
 
-- [ ] Remove space from the begginig and the end of tasks and categories (when we are adding or updating)
+- [x] Remove space from the begginig and the end of tasks and categories (when we are adding or updating)
 - [ ] Check if task name or category name is empty then do not send request.
 - [ ] If there is no result we should prevent error and blur the result box
 - [ ] display errors (using an array called **errors**)
 - [ ] Add dark mode switch
+- [ ] Add category field for task
+- [ ] Capitalize task and category names
+- [ ] Prevent page reloading
+- [ ] Update ReadMe file and add some more description and images
+- [ ] Add today result
+- [ ] Display a list of results
+- [ ] Delete results

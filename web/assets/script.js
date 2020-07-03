@@ -37,7 +37,7 @@ let vue = new Vue({
         this.show_task_modal = true;
       },
       updateTask:function() {
-        let task_name = document.getElementById('new_task_name').value;
+        let task_name = document.getElementById('new_task_name').value.trim();
         axios.put(update_task+this.current_task_id,`task_name=${task_name}`).then(function(response) {
           console.log(response);
         }).catch(function(error) {
@@ -45,7 +45,7 @@ let vue = new Vue({
         })
       },
       updatecategory:function() {
-        let category_name = document.getElementById('new_category_name').value;
+        let category_name = document.getElementById('new_category_name').value.trim();
         let category_description = document.getElementById('new_category_description').value;
         axios.put(update_category+this.current_category_id,`name=${category_name}&description=${category_description}`).then(function(response) {
           console.log(response);
@@ -58,7 +58,7 @@ let vue = new Vue({
         this.show_category_modal = true;
       },
       addTask:function() {
-        let task_name = document.querySelector('#task_name').value;
+        let task_name = document.querySelector('#task_name').value.trim();
         axios.post(add_task,`task_name=${task_name}`).then(function(response) {
           console.log(response);
         }).catch(function(error) {
@@ -66,7 +66,7 @@ let vue = new Vue({
         })
       },
       addCategory:function() {
-        let category_name = document.querySelector('#category_name').value;
+        let category_name = document.querySelector('#category_name').value.trim();
         let description = document.querySelector('#category_description').value;
         axios.post(add_category,`name=${category_name}&&description=${description}`).then(function(response) {
           console.log(response);
