@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
-<body>
+<body class="bg-dark">
     <template id="widget-card-template">
         <div class="card shadow h-100 py-1" :class="['border-left-'+color]">
             <div class="card-body">
@@ -30,9 +30,19 @@
             </div>
         </div>
     </template>
+    <template id="error-alert-template">
+        <div class="alert alert-danger mt-4" v-html="error_text"></div>
+    </template>
     <div class="container pt-2">
         <main id="app">
-            <img src="images/self evaluator.png" alt="Self evaluator" height="100px">
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="images/self evaluator.png" alt="Self evaluator" height="100px">
+                </div>
+                <div class="col-md-9">
+                    <error-alert v-for="error in errors" :error_text="error"></error-alert>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xl-3 col-md-6 mb-4">
                     <widget-card title="Tasks" :content="tasks_count" color="success" icon="list" ></widget-card>
@@ -52,7 +62,8 @@
             <div class="row">
                 <div class="col">
                     <div class="card shadow p-5">
-                        <canvas id="myChart"></canvas>
+                        <h1 class="font-weight-bold text-danger text-center" v-if="chartBlur" style="position: relative; top: 200px;">Add some result</h1>
+                        <canvas id="myChart" :class="{'blur' : chartBlur}"></canvas>
                     </div>
                 </div>
             </div>
@@ -62,8 +73,8 @@
                 <!-- Tasks -->
                 <div class="col-md-6">
                     <div class="card tasks shadow p-0">
-                        <div class="card-header bg-info">
-                            <h3 class="font-weight-bold text-light">Tasks</h3>
+                        <div class="card-header">
+                            <h3 class="font-weight-bold">Tasks</h3>
                         </div>
                         <div class="card-body">
                             <!-- add input for task name -->
@@ -83,7 +94,7 @@
                             <ul>
                                 <li v-for="task in tasks" :id="['task_'+ task.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
                                     <i class="fa fa-trash mr-2" @click="deleteTask(task)"></i>
-                                    <span @click="showTaskUpdateModal(task.id)" class="text-primary link" v-text="task.name"></span>
+                                    <span @click="showTaskUpdateModal(task.id)" class="text-primary link" v-text="capitalize(task.name)"></span>
                                 </li>
                             </ul>
                         </div>
@@ -116,8 +127,8 @@
                 <!-- Categories -->
                 <div class="col-md-6">
                     <div class="card categories shadow p-0">
-                        <div class="card-header bg-info">
-                            <h3 class="font-weight-bold text-light">Categories</h3>
+                        <div class="card-header">
+                            <h3 class="font-weight-bold">Categories</h3>
                         </div>
                         <div class="card-body">
                             <!-- add input for category name and description -->
@@ -144,7 +155,7 @@
                             <ul>
                                 <li v-for="category in categories" :id="['category_'+ category.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
                                     <i class="fa fa-trash mr-2" @click="deleteCategory(category)"></i>
-                                    <span class="text-primary link" @click="showCategoryUpdateModal(category.id)" v-text="category.name"></span> <small v-text="category.description"></small>
+                                    <span class="text-primary link" @click="showCategoryUpdateModal(category.id)" v-text="capitalize(category.name)"></span> <small v-text="category.description"></small>
                                 </li>
                             </ul>
                             </div>
@@ -180,7 +191,7 @@
             </div>
         </main>
         <footer class="mt-4">
-            <p class="copyright text-center">Desined by <a href="https://edrisranjbar.ir">Edris Ranjbar</a></p>
+            <p class="copyright text-center text-light">Desined by <a href="https://edrisranjbar.ir">Edris Ranjbar</a></p>
         </footer>
     </div>
     <script src="assets/script.js"></script>
