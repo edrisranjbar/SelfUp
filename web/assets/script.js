@@ -19,181 +19,187 @@ Vue.component('error-alert',{
 })
 
 let vue = new Vue({
-    el: '#app',
-    data () {
-      return {
-        tasks_count: null,
-        categories_count: null,
-        result_count: null,
-        categories: [],
-        last_result: null,
-        tasks: [],
-        results: [],
-        show_task_modal: false,
-        show_category_modal: false,
-        current_task_id: null,
-        current_category_id: null,
-        chartBlur: false,
-        errors: []
+  el: '#app',
+  data () {
+    return {
+      tasks_count: 0,
+      categories_count: 0,
+      result_count: 0,
+      categories: [],
+      last_result: null,
+      tasks: [],
+      results: [],
+      show_task_modal: false,
+      show_category_modal: false,
+      current_task_id: null,
+      current_category_id: null,
+      chartBlur: false,
+      errors: []
+    }
+  },
+  methods:{
+    capitalize:function(text){
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    },
+    showTaskUpdateModal:function(task_id) {
+      this.current_task_id = task_id;
+      this.show_task_modal = true;
+    },
+    updateTask:function() {
+      let task_name = document.getElementById('new_task_name').value.trim();
+      if(task_name != ""){
+        axios.put(update_task+this.current_task_id,`task_name=${task_name}`).then(function(response) {
+          console.log(response);
+        }).catch(function(error) {
+          console.error(error);
+          this.errors.push("Can not update task!");
+        })
       }
     },
-    methods:{
-      capitalize:function(text){
-        return text.charAt(0).toUpperCase() + text.slice(1);
-      },
-      showTaskUpdateModal:function(task_id) {
-        this.current_task_id = task_id;
-        this.show_task_modal = true;
-      },
-      updateTask:function() {
-        let task_name = document.getElementById('new_task_name').value.trim();
-        if(task_name != ""){
-          axios.put(update_task+this.current_task_id,`task_name=${task_name}`).then(function(response) {
-            console.log(response);
-          }).catch(function(error) {
-            console.error(error);
-            this.errors.push("Can not update task!");
-          })
-        }
-      },
-      updatecategory:function() {
-        let category_name = document.getElementById('new_category_name').value.trim();
-        let category_description = document.getElementById('new_category_description').value;
-        if(category_name != ""){
-          axios.put(update_category+this.current_category_id,`name=${category_name}&description=${category_description}`).then(function(response) {
-            console.log(response);
-          }).catch(function(error) {
-            console.error(error);
-            this.errors.push("Can not update category!");
-          })
-        }
-      },
-      showCategoryUpdateModal:function(category_id) {
-        this.current_category_id = category_id;
-        this.show_category_modal = true;
-      },
-      addTask:function() {
-        let task_name = document.querySelector('#task_name').value.trim();
-        let category_id = document.querySelector('#category').value;
-        if(task_name != ""){
-          axios.post(add_task,`task_name=${task_name}&category=${category_id}`).then(function(response) {
-            console.log(response);
-          }).catch(function(error) {
-            console.error(error);
-            vue.errors.push("Can not add Task");
-          })
-        }
-      },
-      addCategory:function() {
-        let category_name = document.querySelector('#category_name').value.trim();
-        let description = document.querySelector('#category_description').value;
-        if(category_name != ""){
-          axios.post(add_category,`name=${category_name}&&description=${description}`).then(function(response) {
-            console.log(response);
-          }).catch(function(error) {
-            console.error(error);
-            this.errors.push("Can not add Category!");
-          })
-        }
-      },
-      deleteCategory:function(category){
-          axios.get(delete_category+category.id)
-          .then(function (response) {
-            // handle success
-            console.log(response);
-          })
-          .catch(function (error) {
-            // handle error
-            console.error(error);
-            this.errors.push("Can not delete Category!");
-          })          
-          let category_id = "category_"+category.id;
-          document.getElementById(category_id).style.display = "none";
-      },
-      deleteTask:function(task){
-          axios.get(delete_task+task.id)
-          .then(function (response) {
-            // handle success
-            console.log(response);
-          })
-          .catch(function (error) {
-            // handle error
-            console.error(error);
-            this.errors.push("Can not delete Task!");
-          })          
-          let task_id = "task_"+task.id;
-          document.getElementById(task_id).style.display = "none";
-      },
-      get_dates: function(){
-        dates = [];
-        this.results.forEach(elem=>{dates.push(elem.date)});
-        return dates;
-      },
-      get_ranks: function(){
-        ranks = [];
-        this.results.forEach(elem=>{ranks.push(elem.result)});
-        return ranks;
-      },
-      find_category: function(category_id){
-        // returns category
-        let category_name = "";
-        this.categories.forEach(function(the_category){
-          if(the_category.id == category_id){
-            category_name = the_category.name;
-            console.log(category_name);
-          }
+    updatecategory:function() {
+      let category_name = document.getElementById('new_category_name').value.trim();
+      let category_description = document.getElementById('new_category_description').value;
+      if(category_name != ""){
+        axios.put(update_category+this.current_category_id,`name=${category_name}&description=${category_description}`).then(function(response) {
+          console.log(response);
+        }).catch(function(error) {
+          console.error(error);
+          this.errors.push("Can not update category!");
         })
-        return category_name;
+      }
+    },
+    showCategoryUpdateModal:function(category_id) {
+      this.current_category_id = category_id;
+      this.show_category_modal = true;
+    },
+    addTask:function() {
+      let task_name = document.querySelector('#task_name').value.trim();
+      let category_id = document.querySelector('#category').value;
+      if(task_name != ""){
+        this.tasks_count++;
+        axios.post(add_task,`task_name=${task_name}&category=${category_id}`).then(function(response) {
+        }).catch(function(error) {
+          console.error(error);
+          vue.errors.push("Can not add Task");
+        })
+      }
+    },
+    addCategory:function() {
+      let category_name = document.querySelector('#category_name').value.trim();
+      let description = document.querySelector('#category_description').value;
+      if(category_name != ""){
+        this.categories_count++;
+        axios.post(add_category,`name=${category_name}&&description=${description}`).then(function(response) {
+        }).catch(function(error) {
+          console.error(error);
+          this.errors.push("Can not add Category!");
+        })
+      }
+    },
+    deleteCategory:function(category){
+      this.categories_count--;
+      axios.get(delete_category+category.id).then(function (response) {
+      })
+      .catch(function (error) {
+        // handle error
+        console.error(error);
+        this.errors.push("Can not delete Category!");
+      })          
+      let category_id = "category_"+category.id;
+      document.getElementById(category_id).style.display = "none";
+    },
+    deleteTask:function(task){
+      this.tasks_count--;
+      axios.get(delete_task+task.id)
+      .then(function (response) {
+        // handle success
+      })
+      .catch(function (error) {
+        // handle error
+        console.error(error);
+        this.errors.push("Can not delete Task!");
+      })          
+      let task_id = "task_"+task.id;
+      document.getElementById(task_id).style.display = "none";
+    },
+    get_dates: function(){
+      dates = [];
+      this.results.forEach(elem=>{dates.push(elem.date)});
+      return dates;
+    },
+    get_ranks: function(){
+      ranks = [];
+      this.results.forEach(elem=>{ranks.push(elem.result)});
+      return ranks;
+    },
+    find_category: function(category_id){
+      // returns category
+      let category = "";
+      this.categories.forEach(function(the_category){
+        if(the_category.id == category_id){
+          category = the_category;
+        }
+      })
+      return category;
+    },
+    find_task: function(task_id){
+      // returns task
+      let task = "";
+      this.tasks.forEach(function(the_task){
+        if(the_task.id == task_id){
+          task = the_task;
+        }
+      })
+      return task;
     },
   },
-    mounted () {
-        axios.all([
-            axios.get(get_tasks_query),
-            axios.get(get_results_query),
-            axios.get(get_categories_query)
-        ])
-        .then(axios.spread((taskRes, resultRes, categoryRes) => {
-            this.tasks_count = taskRes.data.tasks_count;
-            this.categories_count = categoryRes.data.categories_count;
-            this.result_count = resultRes.data.results_count;
-            if(this.result_count == 0){
-              // blur progress line chart
-              this.chartBlur = true;
-            }
-            this.results = resultRes.data.results;
-            let last_result_index = resultRes.data.results.length -1;
-            try{
-              this.last_result = resultRes.data.results[last_result_index].result;
-            }
-            catch(e){
-              this.last_result = "-";
-              console.error(e);
-            }
-            let categories = categoryRes.data.categories;
-            categories.forEach(element => {
-                this.categories.push({'name': element.name, 'id': element.id, 'description':element.description});
-            });
-            let tasks = taskRes.data.tasks;
-            tasks.forEach(element => {
-                this.tasks.push({'name': element.name, 'id': element.id, 'category_id':element.category_id});
-            });
-            let dates = vue.get_dates();
-            let ranks = vue.get_ranks();
-            let chartPlace = document.getElementById('myChart').getContext('2d');
-            let chart = new Chart(chartPlace, {
-              type: 'line',
-              data: {
-                  labels: dates,
-                  datasets: [{
-                      label: 'Rank',
-                      backgroundColor: 'rgba(100, 255, 132,0.5)',
-                      data: ranks
-                  }]
-              },
-          });
-        })).catch(function(error){
-          console.error(error);
-          vue.errors.push("Can not get data from Server! Try again...");
-        })
-    }
+  mounted () {
+    axios.all([
+      axios.get(get_tasks_query),
+      axios.get(get_results_query),
+      axios.get(get_categories_query)
+    ])
+    .then(axios.spread((taskRes, resultRes, categoryRes) => {
+      this.tasks_count = taskRes.data.tasks_count;
+      this.categories_count = categoryRes.data.categories_count;
+      this.result_count = resultRes.data.results_count;
+      if(this.result_count == 0){
+        // blur progress line chart
+        this.chartBlur = true;
+      }
+      this.results = resultRes.data.results;
+      let last_result_index = resultRes.data.results.length -1;
+      try{
+        this.last_result = resultRes.data.results[last_result_index].result;
+      }
+      catch(e){
+        this.last_result = "-";
+      }
+      let categories = categoryRes.data.categories;
+      categories.forEach(element => {
+        this.categories.push({'name': element.name, 'id': element.id, 'description':element.description});
+      });
+      let tasks = taskRes.data.tasks;
+      tasks.forEach(element => {
+        this.tasks.push({'name': element.name, 'id': element.id, 'category_id':element.category_id});
+      });
+      let dates = vue.get_dates();
+      let ranks = vue.get_ranks();
+      let chartPlace = document.getElementById('myChart').getContext('2d');
+      let chart = new Chart(chartPlace, {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: 'Rank',
+            backgroundColor: 'rgba(100, 255, 132,0.5)',
+            data: ranks
+          }]
+        },
+      });
+    })).catch(function(error){
+      console.error(error);
+      vue.errors.push("Can not get data from Server! Try again...");
+    })
+  }
 })
