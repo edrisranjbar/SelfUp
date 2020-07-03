@@ -43,9 +43,8 @@ class Task:
             query = "SELECT * FROM tasks"
         tasks = conn.execute(query).fetchall()
         counter = 0
-        for task_id, name in tasks:
+        for task in tasks:
             counter += 1
-            print(task_id, name)
         conn.close()
         if counter < 1:
             print("There is no task available!")
