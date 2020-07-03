@@ -13,6 +13,10 @@ Vue.component('widget-card',{
   props: ['title', 'content', 'icon', 'color'],
   template: '#widget-card-template'
 })
+Vue.component('error-alert',{
+  props: ['error_text'],
+  template: '#error-alert-template'
+})
 
 let vue = new Vue({
     el: '#app',
@@ -30,9 +34,13 @@ let vue = new Vue({
         current_task_id: null,
         current_category_id: null,
         chartBlur: false,
+        errors: []
       }
     },
     methods:{
+      capitalize:function(text){
+        return text.charAt(0).toUpperCase() + text.slice(1);
+      },
       showTaskUpdateModal:function(task_id) {
         this.current_task_id = task_id;
         this.show_task_modal = true;
@@ -43,7 +51,8 @@ let vue = new Vue({
           axios.put(update_task+this.current_task_id,`task_name=${task_name}`).then(function(response) {
             console.log(response);
           }).catch(function(error) {
-            console.log(error);
+            console.error(error);
+            this.errors.push("Can not update task!");
           })
         }
       },
@@ -54,7 +63,8 @@ let vue = new Vue({
           axios.put(update_category+this.current_category_id,`name=${category_name}&description=${category_description}`).then(function(response) {
             console.log(response);
           }).catch(function(error) {
-            console.log(error);
+            console.error(error);
+            this.errors.push("Can not update category!");
           })
         }
       },
@@ -68,7 +78,8 @@ let vue = new Vue({
           axios.post(add_task,`task_name=${task_name}`).then(function(response) {
             console.log(response);
           }).catch(function(error) {
-            console.log(error);
+            console.error(error);
+            this.errors.push("Can not add Task");
           })
         }
       },
@@ -79,7 +90,8 @@ let vue = new Vue({
           axios.post(add_category,`name=${category_name}&&description=${description}`).then(function(response) {
             console.log(response);
           }).catch(function(error) {
-            console.log(error);
+            console.error(error);
+            this.errors.push("Can not add Category!");
           })
         }
       },
@@ -91,7 +103,8 @@ let vue = new Vue({
           })
           .catch(function (error) {
             // handle error
-            console.log(error);
+            console.error(error);
+            this.errors.push("Can not delete Category!");
           })          
           let category_id = "category_"+category.id;
           document.getElementById(category_id).style.display = "none";
@@ -104,7 +117,8 @@ let vue = new Vue({
           })
           .catch(function (error) {
             // handle error
-            console.log(error);
+            console.error(error);
+            this.errors.push("Can not delete Task!");
           })          
           let task_id = "task_"+task.id;
           document.getElementById(task_id).style.display = "none";
@@ -165,6 +179,9 @@ let vue = new Vue({
                   }]
               },
           });
-        }))
+        })).catch(function(error){
+          console.error(error);
+          vue.errors.push("Can not get data from Server! Try again...");
+        })
     }
 })

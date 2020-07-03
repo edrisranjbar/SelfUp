@@ -30,9 +30,19 @@
             </div>
         </div>
     </template>
+    <template id="error-alert-template">
+        <div class="alert alert-danger mt-4" v-html="error_text"></div>
+    </template>
     <div class="container pt-2">
         <main id="app">
-            <img src="images/self evaluator.png" alt="Self evaluator" height="100px">
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="images/self evaluator.png" alt="Self evaluator" height="100px">
+                </div>
+                <div class="col-md-9">
+                    <error-alert v-for="error in errors" :error_text="error"></error-alert>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xl-3 col-md-6 mb-4">
                     <widget-card title="Tasks" :content="tasks_count" color="success" icon="list" ></widget-card>
@@ -84,7 +94,7 @@
                             <ul>
                                 <li v-for="task in tasks" :id="['task_'+ task.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
                                     <i class="fa fa-trash mr-2" @click="deleteTask(task)"></i>
-                                    <span @click="showTaskUpdateModal(task.id)" class="text-primary link" v-text="task.name"></span>
+                                    <span @click="showTaskUpdateModal(task.id)" class="text-primary link" v-text="capitalize(task.name)"></span>
                                 </li>
                             </ul>
                         </div>
@@ -145,7 +155,7 @@
                             <ul>
                                 <li v-for="category in categories" :id="['category_'+ category.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
                                     <i class="fa fa-trash mr-2" @click="deleteCategory(category)"></i>
-                                    <span class="text-primary link" @click="showCategoryUpdateModal(category.id)" v-text="category.name"></span> <small v-text="category.description"></small>
+                                    <span class="text-primary link" @click="showCategoryUpdateModal(category.id)" v-text="capitalize(category.name)"></span> <small v-text="category.description"></small>
                                 </li>
                             </ul>
                             </div>

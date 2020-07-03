@@ -7,10 +7,10 @@ _order by date added_
 - [x] Check if task name or category name is empty then do not send request.
 - [x] If there is no result we should prevent error to make other queries fail
 - [x] If there is no result we should blur the progress line chart
-- [ ] display errors (using an array called **errors**)
+- [x] display errors (using an array called **errors**)
 - [ ] Add dark mode switch
 - [ ] Add category field for task
-- [ ] Capitalize task and category names
+- [x] Capitalize task and category names
 - [ ] Prevent page reloading
 - [ ] Update ReadMe file and add some more description and images
 - [ ] Add today result
