@@ -29,6 +29,7 @@ let vue = new Vue({
         show_category_modal: false,
         current_task_id: null,
         current_category_id: null,
+        chartBlur: false,
       }
     },
     methods:{
@@ -129,9 +130,19 @@ let vue = new Vue({
             this.tasks_count = taskRes.data.tasks_count;
             this.categories_count = categoryRes.data.categories_count;
             this.result_count = resultRes.data.results_count;
+            if(this.result_count == 0){
+              // blur progress line chart
+              this.chartBlur = true;
+            }
             this.results = resultRes.data.results;
             let last_result_index = resultRes.data.results.length -1;
-            this.last_result = resultRes.data.results[last_result_index].result;
+            try{
+              this.last_result = resultRes.data.results[last_result_index].result;
+            }
+            catch(e){
+              this.last_result = "-";
+              console.error(e);
+            }
             let categories = categoryRes.data.categories;
             categories.forEach(element => {
                 this.categories.push({'name': element.name, 'id': element.id, 'description':element.description});

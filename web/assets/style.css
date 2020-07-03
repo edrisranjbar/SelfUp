@@ -30,3 +30,6 @@ ul{
 .tasks img, .categories img{
     opacity: 0.6;
 }
+.blur{
+    filter: blur(3px);
+}
