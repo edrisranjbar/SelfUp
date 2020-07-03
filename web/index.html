@@ -85,6 +85,18 @@
                                 <div class="col-md-9">
                                     <input type="text" name="task_name" id="task_name" class="form-control">
                                 </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-3">
+                                    <label for="category" class="mt-1">Category: </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select class="form-control" name="category" id="category">
+                                        <option v-for="category in categories" :value="category.id" v-text="category.name"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-12">
                                     <button class="btn btn-sm btn-outline-success" @click="addTask()">Add</button>
                                 </div>
@@ -95,6 +107,7 @@
                                 <li v-for="task in tasks" :id="['task_'+ task.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
                                     <i class="fa fa-trash mr-2" @click="deleteTask(task)"></i>
                                     <span @click="showTaskUpdateModal(task.id)" class="text-primary link" v-text="capitalize(task.name)"></span>
+                                    <span class="badge badge-info p-2" v-text="find_category(task.category_id)"></span>
                                 </li>
                             </ul>
                         </div>

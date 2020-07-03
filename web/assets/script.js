@@ -74,12 +74,13 @@ let vue = new Vue({
       },
       addTask:function() {
         let task_name = document.querySelector('#task_name').value.trim();
+        let category_id = document.querySelector('#category').value;
         if(task_name != ""){
-          axios.post(add_task,`task_name=${task_name}`).then(function(response) {
+          axios.post(add_task,`task_name=${task_name}&category=${category_id}`).then(function(response) {
             console.log(response);
           }).catch(function(error) {
             console.error(error);
-            this.errors.push("Can not add Task");
+            vue.errors.push("Can not add Task");
           })
         }
       },
@@ -132,8 +133,19 @@ let vue = new Vue({
         ranks = [];
         this.results.forEach(elem=>{ranks.push(elem.result)});
         return ranks;
-      }
+      },
+      find_category: function(category_id){
+        // returns category
+        let category_name = "";
+        this.categories.forEach(function(the_category){
+          if(the_category.id == category_id){
+            category_name = the_category.name;
+            console.log(category_name);
+          }
+        })
+        return category_name;
     },
+  },
     mounted () {
         axios.all([
             axios.get(get_tasks_query),
@@ -163,7 +175,7 @@ let vue = new Vue({
             });
             let tasks = taskRes.data.tasks;
             tasks.forEach(element => {
-                this.tasks.push({'name': element.name, 'id': element.id});
+                this.tasks.push({'name': element.name, 'id': element.id, 'category_id':element.category_id});
             });
             let dates = vue.get_dates();
             let ranks = vue.get_ranks();
