@@ -47,6 +47,7 @@ let vue = new Vue({
     },
     updateTask:function() {
       let task_name = document.getElementById('new_task_name').value.trim();
+      this.find_task(this.current_task_id).name = task_name;
       if(task_name != ""){
         axios.put(update_task+this.current_task_id,`task_name=${task_name}`).then(function(response) {
           console.log(response);
@@ -54,11 +55,15 @@ let vue = new Vue({
           console.error(error);
           this.errors.push("Can not update task!");
         })
+        this.show_task_modal = false;
       }
     },
     updatecategory:function() {
       let category_name = document.getElementById('new_category_name').value.trim();
       let category_description = document.getElementById('new_category_description').value;
+      this.find_category(this.current_category_id).name = category_name;
+      this.find_category(this.current_category_id).description = category_description;
+      this.show_category_modal = false;
       if(category_name != ""){
         axios.put(update_category+this.current_category_id,`name=${category_name}&description=${category_description}`).then(function(response) {
           console.log(response);
@@ -75,6 +80,8 @@ let vue = new Vue({
     addTask:function() {
       let task_name = document.querySelector('#task_name').value.trim();
       let category_id = document.querySelector('#category').value;
+      let last_task_id = this.tasks[this.tasks.length - 1].id;
+
       if(task_name != ""){
         this.tasks_count++;
         axios.post(add_task,`task_name=${task_name}&category=${category_id}`).then(function(response) {
@@ -82,11 +89,15 @@ let vue = new Vue({
           console.error(error);
           vue.errors.push("Can not add Task");
         })
+        // add new task to DOM
+        this.tasks.push({'id':last_task_id + 1, 'name':task_name, 'category_id':category_id});
       }
     },
     addCategory:function() {
       let category_name = document.querySelector('#category_name').value.trim();
       let description = document.querySelector('#category_description').value;
+      let last_category_id = this.categories[this.categories.length - 1].id;
+      this.categories.push({'id':last_category_id + 1, 'name':category_name, 'description':description});
       if(category_name != ""){
         this.categories_count++;
         axios.post(add_category,`name=${category_name}&&description=${description}`).then(function(response) {

@@ -124,7 +124,7 @@
                                 <form>
                                     <div class="form-group">
                                         <label for="new_task_name" class="col-form-label">Name:</label>
-                                        <input type="text" :placeholder="find_task(current_task_id).name" class="form-control" id="new_task_name">
+                                        <input type="text" :value="find_task(current_task_id).name" class="form-control" id="new_task_name">
                                     </div>
                                 </form>
                             </div>
@@ -183,11 +183,11 @@
                                         <form>
                                             <div class="form-group">
                                                 <label for="new_category_name" class="col-form-label">Name:</label>
-                                                <input type="text" :placeholder="find_category(current_category_id).name" class="form-control" id="new_category_name">
+                                                <input type="text" :value="find_category(current_category_id).name" class="form-control" id="new_category_name">
                                             </div>
                                             <div class="form-group">
                                                 <label for="new_category_description" class="col-form-label">Description:</label>
-                                                <textarea class="form-control" id="new_category_description" :placeholder="find_category(current_category_id).description"></textarea>
+                                                <textarea class="form-control" id="new_category_description" v-text="find_category(current_category_id).description"></textarea>
                                             </div>
                                         </form>
                                     </div>
