@@ -10,7 +10,6 @@ _order by date added_
 - [x] display errors (using an array called **errors**)
 - [x] Add category field for task
 - [x] Capitalize task and category names
-- [ ] Prevent page reloading
 - [ ] Update ReadMe file and add some more description and images
 - [ ] Add today result
 - [ ] Display a list of results
