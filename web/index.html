@@ -57,7 +57,7 @@
                     <widget-card title="Last record" :content="last_result" color="primary" icon="bar-chart" ></widget-card>
                 </div>
             </div>
-
+            
             <!-- Progress chart -->
             <div class="row">
                 <div class="col">
@@ -68,7 +68,7 @@
                 </div>
             </div>
             <!-- END Progress chart -->
-
+            
             <div class="row mt-3">
                 <!-- Tasks -->
                 <div class="col-md-6">
@@ -101,13 +101,13 @@
                                     <button class="btn btn-sm btn-outline-success" @click="addTask()">Add</button>
                                 </div>
                             </div>
-
+                            
                             <img src="images/tasks.png" alt="tasks" v-if="tasks_count < 1" height="300px" class="d-block mx-auto">
                             <ul>
                                 <li v-for="task in tasks" :id="['task_'+ task.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
                                     <i class="fa fa-trash mr-2" @click="deleteTask(task)"></i>
                                     <span @click="showTaskUpdateModal(task.id)" class="text-primary link" v-text="capitalize(task.name)"></span>
-                                    <span class="badge badge-info p-2" v-text="find_category(task.category_id)"></span>
+                                    <span class="badge badge-info p-2" v-text="find_category(task.category_id).name"></span>
                                 </li>
                             </ul>
                         </div>
@@ -116,27 +116,27 @@
                 <!-- Update task: modal -->
                 <div class="modal" id="taskModal" v-if="show_task_modal">
                     <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title">Update Task</h5>
-                        </div>
-                        <div class="modal-body">
-                          <form>
-                            <div class="form-group">
-                              <label for="new_task_name" class="col-form-label">Name:</label>
-                              <input type="text" class="form-control" id="new_task_name">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Update Task</h5>
                             </div>
-                          </form>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="new_task_name" class="col-form-label">Name:</label>
+                                        <input type="text" :value="find_task(current_task_id).name" class="form-control" id="new_task_name">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="show_task_modal=false">Close</button>
+                                <button type="button" class="btn btn-primary" @click="updateTask()">Update</button>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" @click="show_task_modal=false">Close</button>
-                          <button type="button" class="btn btn-primary" @click="updateTask()">Update</button>
-                        </div>
-                      </div>
                     </div>
-                  </div>
+                </div>
                 <!-- End task:modal -->
-
+                
                 <!-- Categories -->
                 <div class="col-md-6">
                     <div class="card categories shadow p-0">
@@ -171,34 +171,34 @@
                                     <span class="text-primary link" @click="showCategoryUpdateModal(category.id)" v-text="capitalize(category.name)"></span> <small v-text="category.description"></small>
                                 </li>
                             </ul>
-                            </div>
-                            <!-- Update task: modal -->
-                            <div class="modal" id="categoryModal" v-if="show_category_modal">
-                                <div class="modal-dialog">
+                        </div>
+                        <!-- Update category: modal -->
+                        <div class="modal" id="categoryModal" v-if="show_category_modal">
+                            <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                    <h5 class="modal-title">Update Category</h5>
+                                        <h5 class="modal-title">Update Category</h5>
                                     </div>
                                     <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                        <label for="new_category_name" class="col-form-label">Name:</label>
-                                        <input type="text" class="form-control" id="new_category_name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="new_category_description" class="col-form-label">Description:</label>
-                                            <textarea class="form-control" id="new_category_description"></textarea>
-                                        </div>
-                                    </form>
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="new_category_name" class="col-form-label">Name:</label>
+                                                <input type="text" :value="find_category(current_category_id).name" class="form-control" id="new_category_name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="new_category_description" class="col-form-label">Description:</label>
+                                                <textarea class="form-control" id="new_category_description" v-text="find_category(current_category_id).description"></textarea>
+                                            </div>
+                                        </form>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" @click="show_category_modal=false">Close</button>
-                                    <button type="button" class="btn btn-primary" @click="updatecategory()">Update</button>
+                                        <button type="button" class="btn btn-secondary" @click="show_category_modal=false">Close</button>
+                                        <button type="button" class="btn btn-primary" @click="updatecategory()">Update</button>
                                     </div>
                                 </div>
-                                </div>
                             </div>
-                            <!-- End category:modal -->
+                        </div>
+                        <!-- End category:modal -->
                     </div>
                 </div>
             </div>
