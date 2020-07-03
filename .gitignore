@@ -1,5 +1,5 @@
 .vscode
 venv
-core/database.db
+*.db
 .idea
 __pycache__/

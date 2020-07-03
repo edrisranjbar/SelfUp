@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
-<body>
+<body class="bg-dark">
     <template id="widget-card-template">
         <div class="card shadow h-100 py-1" :class="['border-left-'+color]">
             <div class="card-body">
@@ -73,8 +73,8 @@
                 <!-- Tasks -->
                 <div class="col-md-6">
                     <div class="card tasks shadow p-0">
-                        <div class="card-header bg-info">
-                            <h3 class="font-weight-bold text-light">Tasks</h3>
+                        <div class="card-header">
+                            <h3 class="font-weight-bold">Tasks</h3>
                         </div>
                         <div class="card-body">
                             <!-- add input for task name -->
@@ -127,8 +127,8 @@
                 <!-- Categories -->
                 <div class="col-md-6">
                     <div class="card categories shadow p-0">
-                        <div class="card-header bg-info">
-                            <h3 class="font-weight-bold text-light">Categories</h3>
+                        <div class="card-header">
+                            <h3 class="font-weight-bold">Categories</h3>
                         </div>
                         <div class="card-body">
                             <!-- add input for category name and description -->
@@ -191,7 +191,7 @@
             </div>
         </main>
         <footer class="mt-4">
-            <p class="copyright text-center">Desined by <a href="https://edrisranjbar.ir">Edris Ranjbar</a></p>
+            <p class="copyright text-center text-light">Desined by <a href="https://edrisranjbar.ir">Edris Ranjbar</a></p>
         </footer>
     </div>
     <script src="assets/script.js"></script>

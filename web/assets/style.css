@@ -33,3 +33,6 @@ ul{
 .blur{
     filter: blur(3px);
 }
+.tasks,.categories{
+    min-height: 600px !important;
+}
