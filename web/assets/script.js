@@ -96,7 +96,16 @@ let vue = new Vue({
     addCategory:function() {
       let category_name = document.querySelector('#category_name').value.trim();
       let description = document.querySelector('#category_description').value;
-      let last_category_id = this.categories[this.categories.length - 1].id;
+      let categories_length = this.categories.length - 1;
+      let last_category_id;
+      if (categories_length > 0){
+        // Getting last category id
+        last_category_id = this.categories[categories_length].id;
+      }
+      else{
+        // There is no category
+        last_category_id = 1;
+      }
       this.categories.push({'id':last_category_id + 1, 'name':category_name, 'description':description});
       if(category_name != ""){
         this.categories_count++;
@@ -105,6 +114,9 @@ let vue = new Vue({
           console.error(error);
           this.errors.push("Can not add Category!");
         })
+        // Clear data in category name and description
+        document.querySelector('#category_name').value = "";
+        document.querySelector('#category_description').value = "";
       }
     },
     deleteCategory:function(category){
