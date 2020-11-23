@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Self evaluator</title>
     <link rel="stylesheet" href="assets/style.css">
     <!-- bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/font-awesome-4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
@@ -14,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
+
 <body class="bg-dark">
     <template id="widget-card-template">
         <div class="card shadow h-100 py-1" :class="['border-left-'+color]">
@@ -37,7 +40,7 @@
         <main id="app">
             <div class="row">
                 <div class="col-md-3">
-                    <img src="images/self evaluator.png" alt="Self evaluator" height="100px">
+                    <img src="../images/self evaluator.png" alt="Self evaluator" height="100px">
                 </div>
                 <div class="col-md-9">
                     <error-alert v-for="error in errors" :error_text="error"></error-alert>
@@ -45,31 +48,34 @@
             </div>
             <div class="row">
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <widget-card title="Tasks" :content="tasks_count" color="success" icon="list" ></widget-card>
+                    <widget-card title="Tasks" :content="tasks_count" color="success" icon="list"></widget-card>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <widget-card title="Categories" :content="categories_count" color="info" icon="list" ></widget-card>
+                    <widget-card title="Categories" :content="categories_count" color="info" icon="list"></widget-card>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <widget-card title="Results" :content="result_count" color="warning" icon="star" ></widget-card>
+                    <widget-card title="Results" :content="result_count" color="warning" icon="star"></widget-card>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <widget-card title="Last record" :content="last_result" color="primary" icon="bar-chart" ></widget-card>
+                    <widget-card title="Last record" :content="last_result" color="primary" icon="bar-chart">
+                    </widget-card>
                 </div>
             </div>
-            
+
             <!-- Progress chart -->
             <div class="row">
                 <div class="col">
                     <div class="card shadow p-5">
-                        <h1 class="font-weight-bold text-danger text-center" v-if="chartBlur" style="position: relative; top: 200px;">Add some result</h1>
+                        <h1 class="font-weight-bold text-danger text-center" v-if="chartBlur"
+                            style="position: relative; top: 200px;">Add some result</h1>
                         <canvas id="myChart" :class="{'blur' : chartBlur}"></canvas>
                     </div>
                 </div>
             </div>
             <div class="row mt-2">
                 <div class="col">
-                    <button id="toggle_result_modal_button" class="btn btn-sm btn-success" @click="show_result_modal=true">Add Result</button>
+                    <button id="toggle_result_modal_button" class="btn btn-sm btn-success"
+                        @click="show_result_modal=true">Add Result</button>
                 </div>
             </div>
             <!-- END Progress chart -->
@@ -96,20 +102,22 @@
                                         <label for="['chk_task_'+task.id]" v-text="task.name"></label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="checkbox" :name="['chk_task_'+task.id]" :id="['chk_task_'+task.id]">
+                                        <input type="checkbox" :name="['chk_task_'+task.id]"
+                                            :id="['chk_task_'+task.id]">
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @click="show_result_modal=false">Close</button>
+                            <button type="button" class="btn btn-secondary"
+                                @click="show_result_modal=false">Close</button>
                             <button type="button" class="btn btn-primary" @click="addResult()">Add</button>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- End Add result modal -->
-            
+
             <div class="row mt-3">
                 <!-- Tasks -->
                 <div class="col-md-6">
@@ -133,7 +141,8 @@
                                 </div>
                                 <div class="col-md-9">
                                     <select class="form-control" name="category" id="category">
-                                        <option v-for="category in categories" :value="category.id" v-text="category.name"></option>
+                                        <option v-for="category in categories" :value="category.id"
+                                            v-text="category.name"></option>
                                     </select>
                                 </div>
                             </div>
@@ -142,13 +151,17 @@
                                     <button class="btn btn-sm btn-outline-success" @click="addTask()">Add</button>
                                 </div>
                             </div>
-                            
-                            <img src="images/tasks.png" alt="tasks" v-if="tasks_count < 1" height="300px" class="d-block mx-auto">
+
+                            <img src="../images/tasks.png" alt="tasks" v-if="tasks_count < 1" height="300px"
+                                class="d-block mx-auto">
                             <ul>
-                                <li v-for="task in tasks" :id="['task_'+ task.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
+                                <li v-for="task in tasks" :id="['task_'+ task.id]"
+                                    class="bg-light text-dark p-2 shadow rounded mt-2">
                                     <i class="fa fa-trash mr-2" @click="deleteTask(task)"></i>
-                                    <span @click="showTaskUpdateModal(task.id)" class="text-primary link" v-text="capitalize(task.name)"></span>
-                                    <span class="badge badge-info p-2" v-text="find_category(task.category_id).name"></span>
+                                    <span @click="showTaskUpdateModal(task.id)" class="text-primary link"
+                                        v-text="capitalize(task.name)"></span>
+                                    <span class="badge badge-info p-2"
+                                        v-text="find_category(task.category_id).name"></span>
                                 </li>
                             </ul>
                         </div>
@@ -165,19 +178,21 @@
                                 <form>
                                     <div class="form-group">
                                         <label for="new_task_name" class="col-form-label">Name:</label>
-                                        <input type="text" :value="find_task(current_task_id).name" class="form-control" id="new_task_name">
+                                        <input type="text" :value="find_task(current_task_id).name" class="form-control"
+                                            id="new_task_name">
                                     </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" @click="show_task_modal=false">Close</button>
+                                <button type="button" class="btn btn-secondary"
+                                    @click="show_task_modal=false">Close</button>
                                 <button type="button" class="btn btn-primary" @click="updateTask()">Update</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- End task:modal -->
-                
+
                 <!-- Categories -->
                 <div class="col-md-6">
                     <div class="card categories shadow p-0">
@@ -199,17 +214,22 @@
                                     <label for="description">Description: </label>
                                 </div>
                                 <div class="col-md-9">
-                                    <textarea name="category_description" id="category_description" class="form-control"></textarea>
+                                    <textarea name="category_description" id="category_description"
+                                        class="form-control"></textarea>
                                 </div>
                                 <div class="col-md-12">
                                     <button class="btn btn-sm btn-outline-success" @click="addCategory()">Add</button>
                                 </div>
                             </div>
-                            <img src="images/categories.png" alt="categories" v-if="categories_count < 1" height="300px" class="d-block mx-auto">
+                            <img src="../images/categories.png" alt="categories" v-if="categories_count < 1"
+                                height="300px" class="d-block mx-auto">
                             <ul>
-                                <li v-for="category in categories" :id="['category_'+ category.id]" class="bg-light text-dark p-2 shadow rounded mt-2">
+                                <li v-for="category in categories" :id="['category_'+ category.id]"
+                                    class="bg-light text-dark p-2 shadow rounded mt-2">
                                     <i class="fa fa-trash mr-2" @click="deleteCategory(category)"></i>
-                                    <span class="text-primary link" @click="showCategoryUpdateModal(category.id)" v-text="capitalize(category.name)"></span> <small v-text="category.description"></small>
+                                    <span class="text-primary link" @click="showCategoryUpdateModal(category.id)"
+                                        v-text="capitalize(category.name)"></span> <small
+                                        v-text="category.description"></small>
                                 </li>
                             </ul>
                         </div>
@@ -224,17 +244,22 @@
                                         <form>
                                             <div class="form-group">
                                                 <label for="new_category_name" class="col-form-label">Name:</label>
-                                                <input type="text" :value="find_category(current_category_id).name" class="form-control" id="new_category_name">
+                                                <input type="text" :value="find_category(current_category_id).name"
+                                                    class="form-control" id="new_category_name">
                                             </div>
                                             <div class="form-group">
-                                                <label for="new_category_description" class="col-form-label">Description:</label>
-                                                <textarea class="form-control" id="new_category_description" v-text="find_category(current_category_id).description"></textarea>
+                                                <label for="new_category_description"
+                                                    class="col-form-label">Description:</label>
+                                                <textarea class="form-control" id="new_category_description"
+                                                    v-text="find_category(current_category_id).description"></textarea>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" @click="show_category_modal=false">Close</button>
-                                        <button type="button" class="btn btn-primary" @click="updatecategory()">Update</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            @click="show_category_modal=false">Close</button>
+                                        <button type="button" class="btn btn-primary"
+                                            @click="updatecategory()">Update</button>
                                     </div>
                                 </div>
                             </div>
@@ -245,9 +270,11 @@
             </div>
         </main>
         <footer class="mt-4">
-            <p class="copyright text-center text-light">Desined by <a href="https://edrisranjbar.ir">Edris Ranjbar</a></p>
+            <p class="copyright text-center text-light">Desined by <a href="https://edrisranjbar.ir">Edris Ranjbar</a>
+            </p>
         </footer>
     </div>
     <script src="assets/script.js"></script>
 </body>
+
 </html>
