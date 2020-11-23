@@ -67,7 +67,48 @@
                     </div>
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <button id="toggle_result_modal_button" class="btn btn-sm btn-success" @click="show_result_modal=true">Add Result</button>
+                </div>
+            </div>
             <!-- END Progress chart -->
+
+            <!-- Start Add result modal -->
+            <div class="modal" id="addResultModal" v-if="show_result_modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add result</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <label for="date">Date</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="date" name="date" id="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group" v-for="task in tasks">
+                                    <div class="col-md-8">
+                                        <label for="['chk_task_'+task.id]" v-text="task.name"></label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="checkbox" :name="['chk_task_'+task.id]" :id="['chk_task_'+task.id]">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @click="show_result_modal=false">Close</button>
+                            <button type="button" class="btn btn-primary" @click="addResult()">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Add result modal -->
             
             <div class="row mt-3">
                 <!-- Tasks -->

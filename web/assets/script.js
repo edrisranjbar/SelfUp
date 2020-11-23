@@ -5,6 +5,7 @@ let get_categories_query = API_URL + "category/all";
 let delete_category = API_URL + "category/delete/";
 let delete_task = API_URL + "task/delete/";
 let add_task = API_URL + "task/add";
+let add_result = API_URL + "result/add";
 let add_category = API_URL + "category/add";
 let update_task = API_URL + "task/update/";
 let update_category = API_URL + "category/update/";
@@ -31,6 +32,7 @@ let vue = new Vue({
       results: [],
       show_task_modal: false,
       show_category_modal: false,
+      show_result_modal: false,
       current_task_id: null,
       current_category_id: null,
       chartBlur: false,
@@ -38,6 +40,22 @@ let vue = new Vue({
     }
   },
   methods:{
+    updateChart: function () {
+      let dates = vue.get_dates();
+      let ranks = vue.get_ranks();
+      let chartPlace = document.getElementById('myChart').getContext('2d');
+      let chart = new Chart(chartPlace, {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: 'Rank',
+            backgroundColor: 'rgba(100, 255, 132,0.5)',
+            data: ranks
+          }]
+        },
+      });
+    },
     capitalize:function(text){
       return text.charAt(0).toUpperCase() + text.slice(1);
     },
@@ -175,6 +193,28 @@ let vue = new Vue({
       })
       return task;
     },
+    addResult: function(){
+      let score = 0;
+      let score_step = 100 / this.tasks_count;
+      let date = document.getElementById("date").value;
+      document.querySelectorAll("#addResultModal input[type=checkbox]").forEach((elem) => { 
+        if(elem.checked == true){
+          score += score_step;
+        }
+      })
+      // Send score to API
+      axios.post(add_result,`result=${score}&date=${date}`).then(function(response) {
+      }).catch(function(error) {
+        console.error(error);
+        vue.errors.push("Can not add Result");
+      })
+
+      this.results.push({"date": date, "result": score});
+      this.updateChart();
+
+      // Close Modal
+      this.show_result_modal = false;
+    },
   },
   mounted () {
     axios.all([
@@ -206,20 +246,7 @@ let vue = new Vue({
       tasks.forEach(element => {
         this.tasks.push({'name': element.name, 'id': element.id, 'category_id':element.category_id});
       });
-      let dates = vue.get_dates();
-      let ranks = vue.get_ranks();
-      let chartPlace = document.getElementById('myChart').getContext('2d');
-      let chart = new Chart(chartPlace, {
-        type: 'line',
-        data: {
-          labels: dates,
-          datasets: [{
-            label: 'Rank',
-            backgroundColor: 'rgba(100, 255, 132,0.5)',
-            data: ranks
-          }]
-        },
-      });
+      this.updateChart();
     })).catch(function(error){
       console.error(error);
       vue.errors.push("Can not get data from Server! Try again...");
