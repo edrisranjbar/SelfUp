@@ -1,3 +1,4 @@
 db_file = "database.db"
-version = 1
-about = f"self evaluator api version {version}"
+version = 1.2
+ABOUT = f"self evaluator api version {version}"
+TOKEN = "edri"

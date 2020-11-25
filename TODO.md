@@ -11,6 +11,3 @@ _order by date added_
 - [x] Add category field for task
 - [x] Capitalize task and category names
 - [ ] Update ReadMe file and add some more description and images
-- [ ] Add today result
-- [ ] Display a list of results
-- [ ] Delete results

@@ -81,13 +81,14 @@ header {
   font-size: 60px;
   color: #bdd358;
   margin-bottom: 21px;
+  margin-top: unset;
 }
 
 .intro {
   text-align: center;
 }
 
-.intro .title {
+.intro_title {
   color: var(--darkGreen);
   font-size: 70px;
   font-weight: bold;
@@ -112,6 +113,52 @@ header {
   width: 977px;
   color: var(--gray);
   font-size: 24px;
+}
+
+.offer .title {
+  margin: 96px;
+}
+
+.offer .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.offer .card {
+  width: 350px;
+  margin-left: 39px;
+  background-color: var(--white);
+  box-shadow: 0px 4px 21px #D4D4D4;
+}
+
+.offer .counter {
+  width: 100px;
+  height: 100px;
+  margin: -50px auto 0px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 60px;
+  color: #000;
+}
+
+.card h3 {
+  font-weight: 500;
+  font-size: 30px;
+  color: #000;
+  line-height: 45px;
+  text-align: center;
+}
+
+.card p {
+  padding: 0px 22px;
+  color: var(--gray);
 }
 
 .primary_button {
@@ -146,6 +193,7 @@ header {
   transition-duration: 0.5s;
   text-align: center;
 }
+
 .success_button:hover {
   background-color: var(--darkerGreen);
 }
@@ -228,9 +276,75 @@ a.have_account_link {
   color: var(--gray);
 }
 
+.text-center {
+  text-align: center;
+}
+
+.section_1 {
+  display: flex;
+  justify-content: space-around;
+  height: 400px;
+  margin-right: 120px;
+  margin-top: 92px;
+}
+
+.section_2 {
+  display: flex;
+  justify-content: space-around;
+  height: 400px;
+  margin-left: 120px;
+  margin-right: 120px;
+  margin-top: 96px;
+}
+
+.section_1 h2,
+.section_2 h2 {
+  width: 622px;
+  color: var(--darkGreen);
+  font-weight: bold;
+  font-size: 60px;
+  line-height: 90px;
+}
+
+.section_1 p,
+.section_2 p {
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 36px;
+  max-width: 618px;
+}
+
+.section_1 img {
+  width: 400px;
+  height: 400px;
+}
+
+.contribute {
+  text-align: center;
+  margin-top: 96px;
+  margin-bottom: 96px;
+}
+
+.contribute h2 {
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 90px;
+  text-align: center;
+  color: var(--darkGreen);
+}
+
+.contribute p {
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 36px;
+  width: 854px;
+  margin: 30px auto 0px auto;
+  color: var(--gray);
+
+}
+
 footer {
   position: relative;
-
   width: 100%;
   height: 694px;
   text-align: center;
@@ -241,6 +355,7 @@ footer {
 }
 
 footer p {
+  color: var(--white);
   margin: 30px auto;
   width: 501px;
   font-size: 24px;
