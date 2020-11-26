@@ -2,6 +2,7 @@
   --white: #ffffff;
   --gray: #999799;
   --darkGray: #4a4646;
+  --darkerGray: #2b2828;
   --lightGreen: #e5e059;
   --darkGreen: #bdd358;
   --darkerGreen: #899c31;
@@ -31,8 +32,6 @@ header {
   height: 320px;
   background-image: url("../images/Header\ Background.svg");
   background-repeat: no-repeat;
-  position: relative;
-  top: -30px;
 }
 
 .background_header {
@@ -44,10 +43,11 @@ header {
 }
 
 .logo {
-  margin-left: 141px;
+  margin-left: 129px;
   float: left;
-  height: 104.35px;
-  margin-top: 38px;
+  height: 101.93px;
+  width: 110px;
+  margin-top: 51px;
 }
 
 .menu ul {
@@ -57,18 +57,26 @@ header {
   justify-content: space-around;
   width: 736px;
   font-size: 30px;
+  margin-top: 80px;
 }
 
 .menu ul li {
-  margin-top: 80px;
   color: var(--darkGray);
+  transition-property: color, border;
+  transition-duration: 0.3s;
+  border-bottom: 3px solid transparent;
+}
+
+.menu ul li:hover {
+  color: var(--darkerGray) !important;
+  border-bottom: 3px solid var(--tomato);
 }
 
 .menu_button {
   background-color: #e5625e;
+  border: 3px solid #e5625e !important;
   border-radius: 10px;
   width: 205px;
-  height: 55px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,6 +93,7 @@ header {
 }
 
 .intro {
+  margin-top: 96px;
   text-align: center;
 }
 
@@ -189,7 +198,7 @@ header {
   font-size: 24px;
   line-height: 36px;
   margin-right: 10px;
-  transition-property: background-color, color;
+  transition-property: background-color;
   transition-duration: 0.5s;
   text-align: center;
 }
