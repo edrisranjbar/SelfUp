@@ -255,10 +255,10 @@ header {
 }
 
 .sign_in_box {
-  margin: auto;
+  margin: auto auto 96px auto;
   width: 80%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-around;
   align-items: center;
 }
@@ -266,6 +266,7 @@ header {
 .sign_in_icon {
   width: 500px;
   height: 298.93px;
+  margin-right: 144px;
 }
 
 .sign_in label {
@@ -311,7 +312,7 @@ a.have_account_link {
 .section_2 {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-around;
   min-height: 400px;
   margin-right: 155px;
@@ -441,7 +442,7 @@ footer a {
 }
 
 /* Responsive Design */
-@media (max-width: 400px) {
+@media (max-width: 450px) {
   header {
     background-image: url("../images/Mobile\ Header\ Background.svg");
   }
@@ -509,6 +510,7 @@ footer a {
   .section_2 {
     margin-left: 30px;
     margin-right: 30px;
+    flex-wrap: wrap;
   }
 
   .section_1 h2,

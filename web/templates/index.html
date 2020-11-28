@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Self Evaluator</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/style.css') }}">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,700;0,800;1,300;1,600;1,700&display=swap"
@@ -14,7 +14,7 @@
 
 <body>
     <header>
-        <img src="images/logo.png" alt="Self Evaluator Logo" class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Self Evaluator Logo" class="logo">
         <svg class="menu_icon" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M0.844238 15.0608H23.1813V12.5789H0.844238V15.0608ZM0.844238 8.85608H23.1813V6.37418H0.844238V8.85608ZM0.844238 0.169434V2.65133H23.1813V0.169434H0.844238Z"
@@ -22,7 +22,7 @@
         </svg>
         <nav class="menu">
             <ul>
-                <a href="index.html">
+                <a href="/">
                     <li>Home</li>
                 </a>
                 <a href="#offer">
@@ -31,7 +31,7 @@
                 <a href="#contribute">
                     <li>Contribute</li>
                 </a>
-                <a href="#">
+                <a href="/sign_up">
                     <li class="menu_button">Get Started</li>
                 </a>
             </ul>
@@ -48,7 +48,7 @@
 
     <section class="section_1">
         <div>
-            <img src="images/Gardening.svg" alt="">
+            <img src="{{url_for('static', filename='images/Gardening.svg')}}" alt="">
         </div>
         <div>
             <h2>Grow your self</h2>
@@ -62,7 +62,7 @@
                 set and track your routins.</p>
         </div>
         <div>
-            <img src="images/undraw_visual_data_b1wx 1.svg" alt="">
+            <img src="{{url_for('static', filename='images/undraw_visual_data_b1wx 1.svg')}}" alt="">
         </div>
     </section>
 
@@ -115,7 +115,7 @@
             <a href=""><button>Sing Up Now</button></a>
         </div>
     </footer>
-    <script src="assets/script.js"></script>
+    <script src="{{url_for('static', filename='assets/script.js') }}"></script>
 </body>
 
 </html>
