@@ -390,12 +390,13 @@ footer {
 
 footer p {
   color: var(--white);
-  margin: 30px auto;
-  width: 50%;
+  margin: 20px auto auto auto;
+  width: 70%;
   font-size: 24px;
 }
 
 footer h1 {
+  margin: 0 auto;
   font-weight: bold;
   font-size: 60px;
   color: var(--tomato);
@@ -560,7 +561,7 @@ footer a {
   }
 
   .footer_container {
-    padding-top: 118px;
-    padding-bottom: 62px;
+    padding-top: 62px;
+    padding-bottom: 30px;
   }
 }
