@@ -5,6 +5,7 @@
   --darkerGray: #2b2828;
   --lightGreen: #e5e059;
   --darkGreen: #bdd358;
+  --darkPaleGreen: rgba(189, 211, 88, 0.8);
   --darkerGreen: #899c31;
   --tomato: #e5625e;
 }
@@ -27,7 +28,8 @@ a {
 
 header {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   width: 100%;
   height: 320px;
   background-image: url("../images/Header\ Background.svg");
@@ -50,17 +52,30 @@ header {
   margin-top: 51px;
 }
 
+.menu_icon {
+  color: var(--darkerGray);
+  margin-top: 46.17px;
+  height: 14.89px;
+  width: 22.34px;
+  position: absolute;
+  right: 46.17px;
+  display: none;
+  z-index: 10;
+}
+
 .menu ul {
   list-style: none;
+  flex-direction: row;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-around;
-  width: 736px;
+  /* width: 736px; */
   font-size: 30px;
   margin-top: 80px;
 }
 
 .menu ul li {
+  margin-left: 33px;
   color: var(--darkGray);
   transition-property: color, border;
   transition-duration: 0.3s;
@@ -119,23 +134,25 @@ header {
 
 .intro p {
   margin: 0px auto 19px auto;
-  width: 977px;
+  width: 70%;
   color: var(--gray);
   font-size: 24px;
 }
 
-.offer .title {
-  margin: 96px;
+.offer {
+  margin-top: 96px;
 }
 
 .offer .row {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
   justify-content: center;
 }
 
 .offer .card {
   width: 350px;
+  margin-top: 71px;
   margin-left: 39px;
   background-color: var(--white);
   box-shadow: 0px 4px 21px #D4D4D4;
@@ -166,6 +183,7 @@ header {
 }
 
 .card p {
+  text-align: center;
   padding: 0px 22px;
   color: var(--gray);
 }
@@ -237,10 +255,10 @@ header {
 }
 
 .sign_in_box {
-  margin: auto;
+  margin: auto auto 96px auto;
   width: 80%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-around;
   align-items: center;
 }
@@ -248,6 +266,7 @@ header {
 .sign_in_icon {
   width: 500px;
   height: 298.93px;
+  margin-right: 144px;
 }
 
 .sign_in label {
@@ -289,27 +308,29 @@ a.have_account_link {
   text-align: center;
 }
 
-.section_1 {
+.section_1,
+.section_2 {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: space-around;
-  height: 400px;
-  margin-right: 120px;
+  min-height: 400px;
+  margin-right: 155px;
+  margin-left: 155px;
+}
+
+.section_1 {
   margin-top: 92px;
 }
 
 .section_2 {
-  display: flex;
-  justify-content: space-around;
-  height: 400px;
-  margin-left: 120px;
-  margin-right: 120px;
   margin-top: 96px;
 }
 
 .section_1 h2,
 .section_2 h2 {
-  width: 622px;
-  color: var(--darkGreen);
+  /* width: 622px; */
+  color: var(--darkPaleGreen);
   font-weight: bold;
   font-size: 60px;
   line-height: 90px;
@@ -323,9 +344,9 @@ a.have_account_link {
   max-width: 618px;
 }
 
-.section_1 img {
-  width: 400px;
-  height: 400px;
+.section_1 img,
+.section_2 img {
+  max-width: 100%;
 }
 
 .contribute {
@@ -346,7 +367,7 @@ a.have_account_link {
   font-weight: normal;
   font-size: 24px;
   line-height: 36px;
-  width: 854px;
+  width: 70%;
   margin: 30px auto 0px auto;
   color: var(--gray);
 
@@ -355,18 +376,22 @@ a.have_account_link {
 footer {
   position: relative;
   width: 100%;
-  height: 694px;
+  /* max-height: 694px; */
   text-align: center;
   background-image: url("../images/Footer Background.svg");
   background-repeat: no-repeat;
-  /* background-position: center; */
   background-size: cover;
+}
+
+.footer_container {
+  padding-top: 236px;
+  padding-bottom: 118px;
 }
 
 footer p {
   color: var(--white);
   margin: 30px auto;
-  width: 501px;
+  width: 50%;
   font-size: 24px;
 }
 
@@ -381,6 +406,7 @@ footer h1 span {
 }
 
 footer a button {
+  cursor: pointer;
   outline: none;
   width: 231px;
   height: 54px;
@@ -400,17 +426,141 @@ footer .background_footer {
   z-index: -1;
 }
 
+
 footer h1,
 footer p,
 footer a {
   position: relative;
-  top: 236px;
 }
 
 .footer_shadow {
   bottom: 0px;
   width: 100%;
-  height: 365.13px;
+  height: 50%;
   background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
   position: absolute;
+}
+
+/* Responsive Design */
+@media (max-width: 450px) {
+  header {
+    background-image: url("../images/Mobile\ Header\ Background.svg");
+  }
+
+  .menu ul {
+    display: none;
+    z-index: 2;
+    height: 100vh;
+    background-color: var(--darkGreen);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    margin: 0px;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 18px;
+    padding: 20px;
+  }
+
+  .menu ul li {
+    color: var(--white);
+    margin-top: 20px;
+  }
+
+  .menu ul li:hover {
+    border-bottom: transparent;
+  }
+
+  .menu_icon {
+    display: block;
+  }
+
+  .logo {
+    margin: 10px 20px;
+    width: 100px;
+    height: 96.93px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .intro {
+    margin-top: -96px;
+  }
+
+  .intro .title::before,
+  .intro .title::after {
+    content: unset;
+  }
+
+  .intro p {
+    font-size: 12px;
+  }
+
+  .primary_button {
+    margin: 25px auto 0px auto;
+    width: 115.5px;
+    height: 27px;
+    font-size: 12px;
+  }
+
+  .section_1,
+  .section_2 {
+    margin-left: 30px;
+    margin-right: 30px;
+    flex-wrap: wrap;
+  }
+
+  .section_1 h2,
+  .section_2 h2 {
+    font-size: 30px;
+    text-align: center;
+  }
+
+  .section_1 p,
+  .section_2 p {
+    text-align: center;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .offer .row {
+    flex-direction: column;
+  }
+
+  .contribute h2 {
+    font-size: 30px;
+  }
+
+  .offer .card {
+    margin-top: 71px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .contribute p {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  footer h1 {
+    font-size: 30px;
+  }
+
+  footer p {
+    font-size: 12px;
+  }
+
+  footer a button {
+    width: 115px;
+    height: 27px;
+    font-size: 12px;
+  }
+
+  .footer_container {
+    padding-top: 118px;
+    padding-bottom: 62px;
+  }
 }
