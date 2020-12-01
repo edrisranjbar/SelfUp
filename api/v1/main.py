@@ -87,18 +87,19 @@ if __name__ == "__main__":
 
     @app.route(f'/{TOKEN}/category/delete/<category_id>', methods=["DELETE"])
     def delete_category(category_id):
+        user_id = request.values.get('user_id')
         # check if category exists
-        if Category.exist(category_id):
-            delete_status = Category.delete(category_id)
+        if Category.exist(category_id, user_id):
+            delete_status = Category.delete(category_id, user_id)
             return jsonify(status=delete_status)
         else:
             abort(400)
 
     @app.route(f'/{TOKEN}/category/update/<category_id>', methods=["PUT"])
     def update_category(category_id):
+        user_id = request.values.get('user_id')
         # check if category exist
-        if Category.exist(category_id):
-            user_id = request.values.get('user_id')
+        if Category.exist(category_id, user_id):
             name = request.values.get('name')
             description = request.values.get('description')
             update_status = Category.update(
@@ -108,28 +109,31 @@ if __name__ == "__main__":
             abort(400)
 
     # Result
-
     @app.route(f'/{TOKEN}/result/add', methods=["POST"])
     def add_result():
         result = request.values.get('result')
         date = request.values.get('date')
-        add_status = Result.add(result, date)
+        user_id = request.values.get('user_id')
+        add_status = Result.add(result, date, user_id)
         return jsonify(status=add_status)
 
     @app.route(f'/{TOKEN}/result/delete/<result_id>')
     def delete_result(result_id):
-        return jsonify(status=Result.delete(result_id))
+        user_id = request.values.get('user_id')
+        return jsonify(status=Result.delete(result_id, user_id))
 
     @app.route(f'/{TOKEN}/result/update/<result_id>', methods=["PUT"])
     def update_result(result_id):
         result = request.values.get('result')
         date = request.values.get('date')
-        return jsonify(status=Result.update(result_id, result, date))
+        user_id = request.values.get('user_id')
+        return jsonify(status=Result.update(result_id, result, date, user_id))
 
-    @app.route(f'/{TOKEN}/result/all')
+    @app.route(f'/{TOKEN}/result/all', methods=["POST"])
     def get_all_results():
-        results = Result.get_all()
-        return jsonify(results=results, results_count=Result.get_count())
+        user_id = request.values.get('user_id')
+        results = Result.get_all(user_id)
+        return jsonify(results=results, results_count=Result.get_count(user_id))
 
     # User
     @app.route(f'/{TOKEN}/user/add', methods=["POST"])

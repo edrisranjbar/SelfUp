@@ -16,9 +16,9 @@ class Category:
         return True
 
     @staticmethod
-    def exist(id):
+    def exist(id, user_id):
         conn = connect(config.db_file)
-        query = f"SELECT COUNT (*) FROM category WHERE id={id}"
+        query = f"SELECT COUNT (*) FROM category WHERE id={id} AND user_id = {user_id}"
         count = conn.execute(query).fetchone()[0]
         conn.close()
         if count > 0:
@@ -46,11 +46,11 @@ class Category:
         return True
 
     @staticmethod
-    def delete(category_id):
+    def delete(category_id, user_id):
         """ Delete a specific category with id """
         connection = connect(config.db_file)
         try:
-            query = f"DELETE FROM category WHERE id='{category_id}'"
+            query = f"DELETE FROM category WHERE id='{category_id}' AND user_id = {user_id}"
             cursor = connection.cursor()
             cursor.execute(query)
             connection.commit()
@@ -64,7 +64,7 @@ class Category:
     def update(category_id, user_id, category_name, description=""):
         connection = connect(config.db_file)
         cursor = connection.cursor()
-        if description is None:
+        if description == "":
             query = f"UPDATE category SET name='{category_name}' WHERE id={category_id} AND user_id = {user_id}"
         else:
             query = f"UPDATE category SET name='{category_name}', description='{description}' WHERE id={category_id} AND user_id = {user_id}"
