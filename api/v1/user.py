@@ -17,14 +17,13 @@ class User:
         return True
 
     @staticmethod
-    def exists(user_id="", email=""):
+    def exists(email, password):
         """ Retuns a boolean """
+        hashed_password = User.hashPassword(password)
         connection = connect(config.db_file)
-        if email == "":
-            query = f"SELECT COUNT (*) FROM users WHERE user_id={user_id}"
-        else:
-            query = f"SELECT COUNT(*) FROM users WHERE email={email}"
-        count = connection.execute(query).fetchone()[0]
+        query = f"SELECT COUNT(*) FROM users WHERE email=? AND password=?"
+        count = connection.execute(
+            query, (email, hashed_password)).fetchone()[0]
         connection.close()
         return (count > 0)
 
@@ -34,7 +33,7 @@ class User:
             Get a single user based on passed user_id,
             We should check that it is not null and it's a positive number.
         """
-        conn = sqlite3.connect(config.db_file)
+        conn = connect(config.db_file)
         if User.exists(user_id) == True:
             query = f"SELECT * FROM users WHERE user_id={user_id}"
             user = conn.execute(query).fetchone()
@@ -43,10 +42,6 @@ class User:
                     'email': user[2], 'password': user[3]}
         else:
             return False
-
-    @staticmethod
-    def findByEmail(email):
-        pass
 
     @staticmethod
     def isAValidEmail(email):
@@ -63,14 +58,14 @@ class User:
     @staticmethod
     def add(name, email, password):
         """check if the passed data is correct and add the user if does not already exists. check id based on given email address"""
-        if User.exists(email=email) is not True:
+        if User.exists(email, password) is not True:
             if User.isAValidEmail(email):
                 # Hash password
-                hashed_password = password
-                connection = sqlite3.connect(config.db_file)
+                hashed_password = User.hashPassword(password)
+                connection = connect(config.db_file)
                 cursor = connection.cursor()
-                query = f"INSERT INTO users (name,email,password) VALUES ('{name, email, hashed_password}')"
-                cursor.execute(query)
+                query = f"INSERT INTO users (name,email,password) VALUES (?, ?, ?)"
+                cursor.execute(query, (name, email, hashed_password))
                 connection.commit()
                 connection.close()
                 return True
@@ -81,7 +76,7 @@ class User:
         # TODO: update Email needs to be confirmed by the Email owner, so this feature will stand by
         if User.exists(user_id) and len(name) > 3 and len(password) > 3:
             hashed_password = User.hashPassword(password)
-            connection = sqlite3.connect(config.db_file)
+            connection = connect(config.db_file)
             cursor = connection.cursor()
             query = f"UPDATE users SET name = '{name}', password = '{hashed_password}' WHERE user_id = {user_id} LIMIT 1"
             cursor.execute(query)
@@ -93,7 +88,7 @@ class User:
     @staticmethod
     def remove(user_id):
         if User.exists(user_id):
-            connection = sqlite3.connect(config.db_file)
+            connection = connect(config.db_file)
             cursor = connection.cursor()
             query = f"DELETE FROM users HERE user_id = {user_id} LIMIT 1"
             cursor.execute()

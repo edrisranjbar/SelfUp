@@ -1,7 +1,9 @@
 from flask import Flask, url_for, request, render_template
 from markupsafe import escape
+import requests
 
-
+TOKEN = "edri"
+API_URL = f"http://127.0.0.1:5000/{TOKEN}/"
 app = Flask(__name__)
 
 
@@ -13,8 +15,15 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
-        # Do the login process
-        pass
+        email = request.values.get('email')
+        password = request.values.get('password')
+        user_exists = requests.post(f"{API_URL}user/exists",
+                                    {"email": email, "password": password}).json()["status"]
+        if user_exists:
+            return "User Exists"
+        else:
+            return "User not found"
+
     else:
         return render_template("login.html")
 

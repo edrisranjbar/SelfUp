@@ -22,30 +22,34 @@ if __name__ == "__main__":
     def about():
         return jsonify(message=ABOUT)
 
-    @app.route(f'/{TOKEN}/task/all')
+    @app.route(f'/{TOKEN}/task/all', methods=["POST"])
     def tasks():
-        return jsonify(tasks=Task.get_all(), tasks_count=Task.get_count())
+        user_id = request.values.get("user_id")
+        return jsonify(tasks=Task.get_all(user_id), tasks_count=Task.get_count(user_id))
 
-    @app.route(f'/{TOKEN}/task/<task_id>', methods=["GET"])
+    @app.route(f'/{TOKEN}/task/<task_id>', methods=["POST"])
     def get_task(task_id):
-        if Task.exist(task_id):
-            task_details = Task.get(task_id)
+        user_id = request.values.get('user_id')
+        if Task.exist(task_id=task_id, user_id=user_id):
+            task_details = Task.get(task_id, user_id)
             return jsonify(task_details)
         else:
             abort(400)
 
-    @app.route(f'/{TOKEN}/task/delete/<task_id>', methods=["GET"])
+    @app.route(f'/{TOKEN}/task/delete/<task_id>', methods=["DELETE"])
     def delete_task(task_id):
-        if Task.exist(task_id):
-            return jsonify(result=Task.delete(task_id))
+        user_id = request.values.get('user_id')
+        if Task.exist(task_id, user_id):
+            return jsonify(result=Task.delete(task_id, user_id))
         else:
             abort(400)
 
     @app.route(f'/{TOKEN}/task/update/<task_id>', methods=["PUT"])
     def update_task(task_id):
         task_name = request.values.get('task_name')
-        if Task.exist(task_id):
-            update_status = Task.update(task_id, task_name)
+        user_id = request.values.get('user_id')
+        if Task.exist(task_id, user_id):
+            update_status = Task.update(task_id, task_name, user_id)
             return jsonify(status=update_status)
         else:
             return abort(400)
@@ -53,32 +57,35 @@ if __name__ == "__main__":
     @app.route(f'/{TOKEN}/task/add', methods=['POST'])
     def add_task():
         task_name = request.values.get('task_name')
-        category_id = request.values.get('category')
+        category_id = request.values.get('category_id')
+        user_id = request.values.get('user_id')
         print(task_name)
         if Task.is_task_name_valid(task_name):
-            add_task_status = Task.add(task_name, category_id)
+            add_task_status = Task.add(task_name, category_id, user_id)
             return jsonify(status=add_task_status)
         else:
             return abort(400)
 
     # Category routes
 
-    @app.route(f'/{TOKEN}/category/all')
+    @app.route(f'/{TOKEN}/category/all', methods=['POST'])
     def get_categories():
-        categories = Category.get_all()
-        return jsonify(categories=categories, categories_count=Category.get_count())
+        user_id = request.values.get('user_id')
+        categories = Category.get_all(user_id)
+        return jsonify(categories=categories, categories_count=Category.get_count(user_id))
 
     @app.route(f'/{TOKEN}/category/add', methods=["POST"])
     def add_category():
         name = request.values.get('name')
+        user_id = request.values.get('user_id')
         description = request.values.get('description')
-        add_status = Category.add(name, description)
+        add_status = Category.add(name, description, user_id)
         if add_status:
             return jsonify(status=add_status)
         else:
             abort(400)
 
-    @app.route(f'/{TOKEN}/category/delete/<category_id>')
+    @app.route(f'/{TOKEN}/category/delete/<category_id>', methods=["DELETE"])
     def delete_category(category_id):
         # check if category exists
         if Category.exist(category_id):
@@ -91,9 +98,11 @@ if __name__ == "__main__":
     def update_category(category_id):
         # check if category exist
         if Category.exist(category_id):
+            user_id = request.values.get('user_id')
             name = request.values.get('name')
             description = request.values.get('description')
-            update_status = Category.update(category_id, name, description)
+            update_status = Category.update(
+                category_id=category_id, category_name=name, description=description, user_id=user_id)
             return jsonify(status=update_status)
         else:
             abort(400)
@@ -101,7 +110,7 @@ if __name__ == "__main__":
     # Result
 
     @app.route(f'/{TOKEN}/result/add', methods=["POST"])
-    def get_result():
+    def add_result():
         result = request.values.get('result')
         date = request.values.get('date')
         add_status = Result.add(result, date)
@@ -121,5 +130,20 @@ if __name__ == "__main__":
     def get_all_results():
         results = Result.get_all()
         return jsonify(results=results, results_count=Result.get_count())
+
+    # User
+    @app.route(f'/{TOKEN}/user/add', methods=["POST"])
+    def add_user():
+        name = request.values.get('name')
+        email = request.values.get('email')
+        password = request.values.get('password')
+        add_user_status = User.add(name, email, password)
+        return jsonify(status=add_user_status)
+
+    @app.route(f'/{TOKEN}/user/exists', methods=["POST"])
+    def check_user_exists():
+        email = request.values.get('email')
+        password = request.values.get('password')
+        return jsonify(status=User.exists(email, password))
 
     app.run(debug=True)
