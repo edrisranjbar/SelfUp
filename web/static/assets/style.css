@@ -407,7 +407,7 @@ footer h1 span {
   color: #3f3d56;
 }
 
-footer a button {
+footer a {
   cursor: pointer;
   outline: none;
   width: 231px;
@@ -418,6 +418,10 @@ footer a button {
   border-radius: 10px;
   font-size: 24px;
   font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto 0px auto;
 }
 
 footer .background_footer {
@@ -561,6 +565,7 @@ footer a {
     height: 150px;
     margin: -40% auto 0px auto;
   }
+
   .title {
     font-size: 30px;
     text-align: center;
@@ -573,6 +578,7 @@ footer a {
     padding: 5px;
     font-size: 12px;
   }
+
   .sign_in_box label {
     margin-right: 6px;
     margin-top: 0px;
@@ -585,6 +591,7 @@ footer a {
     font-size: 12px;
     font-weight: 400;
   }
+
   .success_button {
     min-height: 30px;
     min-width: 120px;
@@ -597,6 +604,7 @@ footer a {
     min-width: 120px;
     font-size: 12px;
   }
+
   footer h1 {
     font-size: 30px;
   }
@@ -606,7 +614,7 @@ footer a {
     margin: 10px auto auto auto;
   }
 
-  footer a button {
+  footer a {
     width: 115px;
     height: 27px;
     font-size: 12px;
