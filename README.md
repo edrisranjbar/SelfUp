@@ -11,6 +11,10 @@ But in the near future i guess we can Deploy it and make it public so that every
 
 ### Installation guide
 
-- [ ] make sure that you have installed python3
-- [ ] install the requirements `pip install -r requirement.txt`
-- [ ]
+- [ ] Make sure that you have installed python3
+- [ ] Go to project directory and create a virtual environment `virtualenv -p python3 venv`, then activate the project virtual environment `source venv/bin/activate`
+- [ ] Install the requirements `pip install -r requirements.txt`
+- [ ] Go to api/v1 directory and run the api server with typing `python main.py`
+- [ ] Go to web directory and run flask web server with `python main.py`
+
+_Now enjoy having **SelfUp** Up and going..._
