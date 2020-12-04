@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Self evaluator</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/dashboard/style.css')}}">
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -40,7 +40,8 @@
         <main id="app">
             <div class="row">
                 <div class="col-md-3">
-                    <img src="../images/self evaluator.png" alt="Self evaluator" height="100px">
+                    <img src="{{url_for('static',filename='images/self evaluator.png')}}" alt="Self evaluator"
+                        height="100px">
                 </div>
                 <div class="col-md-9">
                     <error-alert v-for="error in errors" :error_text="error"></error-alert>
@@ -152,8 +153,8 @@
                                 </div>
                             </div>
 
-                            <img src="../images/tasks.png" alt="tasks" v-if="tasks_count < 1" height="300px"
-                                class="d-block mx-auto">
+                            <img src="{{url_for('static',filename='images/tasks.png')}}" alt="tasks"
+                                v-if="tasks_count < 1" height="300px" class="d-block mx-auto">
                             <ul>
                                 <li v-for="task in tasks" :id="['task_'+ task.id]"
                                     class="bg-light text-dark p-2 shadow rounded mt-2">
@@ -221,8 +222,8 @@
                                     <button class="btn btn-sm btn-outline-success" @click="addCategory()">Add</button>
                                 </div>
                             </div>
-                            <img src="../images/categories.png" alt="categories" v-if="categories_count < 1"
-                                height="300px" class="d-block mx-auto">
+                            <img src="{{url_for('static',filename='images/categories.png')}}" alt="categories"
+                                v-if="categories_count < 1" height="300px" class="d-block mx-auto">
                             <ul>
                                 <li v-for="category in categories" :id="['category_'+ category.id]"
                                     class="bg-light text-dark p-2 shadow rounded mt-2">
@@ -274,7 +275,7 @@
             </p>
         </footer>
     </div>
-    <script src="assets/script.js"></script>
+    <script src="{{url_for('static',filename='assets/dashboard/script.js')}}"></script>
 </body>
 
 </html>
