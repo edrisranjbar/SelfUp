@@ -150,4 +150,12 @@ if __name__ == "__main__":
         password = request.values.get('password')
         return jsonify(status=User.exists(email, password))
 
+    @app.route(f'/{TOKEN}/user/delete/<user_id>', methods=["DELETE"])
+    def delete_user(user_id):
+        if User.exists(email=None, password=None, user_id=user_id):
+            User.remove(user_id)
+            return jsonify(status=True)
+        else:
+            abort(400)
+
     app.run(debug=True)

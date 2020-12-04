@@ -27,11 +27,15 @@ def login():
             abort(401)
 
     else:
+        if is_logged_in():
+            return redirect(url_for("dashboard"))
         return render_template("login.html")
 
 
 @app.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
+    if is_logged_in():
+        return redirect(url_for("dashboard"))
     if request.method == "POST":
         name = request.values.get('name')
         email = request.values.get('email')
@@ -48,6 +52,13 @@ def is_logged_in():
     if "email" in session:
         return True
     return False
+
+
+@app.route('/logout')
+def logout():
+    if is_logged_in():
+        del session["email"]
+        return redirect(url_for("login"))
 
 
 @app.route('/dashboard')
