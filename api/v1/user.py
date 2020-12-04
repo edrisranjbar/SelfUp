@@ -17,15 +17,20 @@ class User:
         return True
 
     @staticmethod
-    def exists(email, password):
+    def exists(email, password, user_id=None):
         """ Retuns a boolean """
-        hashed_password = User.hashPassword(password)
         connection = connect(config.db_file)
-        query = f"SELECT COUNT(*) FROM users WHERE email=? AND password=?"
-        count = connection.execute(
-            query, (email, hashed_password)).fetchone()[0]
+        if user_id is None:
+            hashed_password = User.hashPassword(password)
+            query = "SELECT COUNT(*) FROM users WHERE email=? AND password=?"
+            count = connection.execute(
+                query, (email, hashed_password)).fetchone()[0]
+        else:
+            query = "SELECT COUNT(*) FROM users WHERE user_id = ?"
+            count = connection.execute(
+                query, (user_id)).fetchone()[0]
         connection.close()
-        return (count > 0)
+        return bool(count > 0)
 
     @staticmethod
     def get(user_id):
@@ -87,12 +92,10 @@ class User:
 
     @staticmethod
     def remove(user_id):
-        if User.exists(user_id):
-            connection = connect(config.db_file)
-            cursor = connection.cursor()
-            query = f"DELETE FROM users HERE user_id = {user_id} LIMIT 1"
-            cursor.execute()
-            connection.commit()
-            connection.close()
-            return True
-        return False
+        connection = connect(config.db_file)
+        cursor = connection.cursor()
+        query = f"DELETE FROM users WHERE user_id = {user_id} LIMIT 1"
+        cursor.execute()
+        connection.commit()
+        connection.close()
+        return True
