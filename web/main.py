@@ -4,6 +4,7 @@ import requests
 
 TOKEN = "edri"
 API_URL = f"http://127.0.0.1:5000/{TOKEN}/"
+MAX_LOGIN_ATTEMPT = 10
 app = Flask(__name__)
 
 
@@ -15,6 +16,12 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
+        if "login_attempt" not in session:
+            session['login_attempt'] = 0
+        else:
+            session['login_attempt'] += 1
+        if session['login_attempt'] > MAX_LOGIN_ATTEMPT:
+            redirect(url_for("login"))
         email = request.values.get('email')
         password = request.values.get('password')
         user_exists = requests.post(f"{API_URL}user/exists",
@@ -24,7 +31,7 @@ def login():
             session["email"] = email
             return redirect(url_for("dashboard"))
         else:
-            abort(401)
+            return redirect(url_for("login"))
 
     else:
         if is_logged_in():
