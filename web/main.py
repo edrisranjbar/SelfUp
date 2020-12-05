@@ -1,9 +1,10 @@
-from flask import Flask, url_for, request, render_template, abort, redirect, session
+from flask import Flask, url_for, request, render_template, abort, redirect, session, flash
 from markupsafe import escape
 import requests
 
 TOKEN = "edri"
 API_URL = f"http://127.0.0.1:5000/{TOKEN}/"
+MAX_LOGIN_ATTEMPT = 10
 app = Flask(__name__)
 
 
@@ -15,6 +16,12 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
+        if "login_attempt" not in session:
+            session['login_attempt'] = 0
+        else:
+            session['login_attempt'] += 1
+        if session['login_attempt'] > MAX_LOGIN_ATTEMPT:
+            redirect(url_for("login"))
         email = request.values.get('email')
         password = request.values.get('password')
         user_exists = requests.post(f"{API_URL}user/exists",
@@ -22,9 +29,11 @@ def login():
         if user_exists:
             # set session
             session["email"] = email
+            flash("You were successfully logged in!", 'success')
             return redirect(url_for("dashboard"))
         else:
-            abort(401)
+            flash("Invalid credentials!", 'error')
+            return render_template("login.html")
 
     else:
         if is_logged_in():
@@ -58,6 +67,7 @@ def is_logged_in():
 def logout():
     if is_logged_in():
         del session["email"]
+        flash("You were successfully logged out!", 'success')
         return redirect(url_for("login"))
 
 
