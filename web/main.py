@@ -32,7 +32,8 @@ def login():
             flash("You were successfully logged in!", 'success')
             return redirect(url_for("dashboard"))
         else:
-            return render_template("login.html", error="Invalid credentials")
+            flash("Invalid credentials!", 'error')
+            return render_template("login.html")
 
     else:
         if is_logged_in():
@@ -66,6 +67,7 @@ def is_logged_in():
 def logout():
     if is_logged_in():
         del session["email"]
+        flash("You were successfully logged out!", 'success')
         return redirect(url_for("login"))
 
 
