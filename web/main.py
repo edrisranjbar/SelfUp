@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, render_template, abort, redirect, session
+from flask import Flask, url_for, request, render_template, abort, redirect, session, flash
 from markupsafe import escape
 import requests
 
@@ -29,9 +29,10 @@ def login():
         if user_exists:
             # set session
             session["email"] = email
+            flash("You were successfully logged in!", 'success')
             return redirect(url_for("dashboard"))
         else:
-            return redirect(url_for("login"))
+            return render_template("login.html", error="Invalid credentials")
 
     else:
         if is_logged_in():

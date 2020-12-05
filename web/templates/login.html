@@ -44,6 +44,9 @@
       <img src="{{url_for('static',filename='images/Login Icon.svg')}}" alt="Login Icon" class="sign_in_icon" />
       <section class="sign_in">
         <h3 class="title">Sign in</h3>
+        {% if error %}
+        <div class="alert alert-error"><strong>Error:</strong> {{ error }}</div>
+        {% endif %}
         <form action="/login" method="POST">
           <div class="row">
             <label for="email">Email:</label>
