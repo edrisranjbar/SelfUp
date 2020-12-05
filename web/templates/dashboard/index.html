@@ -18,15 +18,6 @@
 </head>
 
 <body class="bg-dark">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class=flashes>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
     <template id="widget-card-template">
         <div class="card shadow h-100 py-1" :class="['border-left-'+color]">
             <div class="card-body">
@@ -47,6 +38,15 @@
     </template>
     <div class="container pt-2">
         <main id="app">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for category, message in messages %}
+                <li class="alert alert-{{category}}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
             <div class="row">
                 <div class="col-md-3">
                     <img src="{{url_for('static',filename='images/logo.png')}}" alt="Self evaluator" height="100px">
