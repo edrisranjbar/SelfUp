@@ -51,7 +51,7 @@ def sign_up():
         add_user = requests.post(f"{API_URL}user/add", {"name": name,
                                                         "email": email, "password": password}).json()["status"]
         if add_user:
-            return redirect(url_for("/dashboard"))
+            return redirect(url_for("dashboard"))
     return render_template("sign_up.html")
 
 
