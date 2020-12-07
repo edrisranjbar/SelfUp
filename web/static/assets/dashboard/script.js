@@ -1,5 +1,4 @@
-const TOKEN = 'edri';
-const API_URL = `http://127.0.0.1:5000/${TOKEN}/`;
+const API_URL = `http://127.0.0.1:8898/dashboard/`;
 let get_tasks_query = API_URL + "task/all";
 let get_results_query = API_URL + "result/all";
 let get_categories_query = API_URL + "category/all";
@@ -229,9 +228,9 @@ let vue = new Vue({
   },
   mounted() {
     axios.all([
-        axios.post(get_tasks_query, {}),
-        axios.post(get_results_query),
-        axios.post(get_categories_query)
+        axios.get(get_tasks_query),
+        axios.get(get_results_query),
+        axios.get(get_categories_query)
       ])
       .then(axios.spread((taskRes, resultRes, categoryRes) => {
         this.tasks_count = taskRes.data.tasks_count;
