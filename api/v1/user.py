@@ -1,7 +1,6 @@
 import config
 from sqlite3 import *
 import re
-import os
 import hashlib
 
 
@@ -34,19 +33,22 @@ class User:
 
     @staticmethod
     def get(user_id):
-        """ 
-            Get a single user based on passed user_id,
-            We should check that it is not null and it's a positive number.
-        """
         conn = connect(config.db_file)
-        if User.exists(user_id) == True:
-            query = f"SELECT * FROM users WHERE user_id={user_id}"
-            user = conn.execute(query).fetchone()
+        if User.exists(user_id):
+            query = "SELECT * FROM users WHERE user_id= ?"
+            user = conn.execute(query, (user_id,)).fetchone()
             conn.close()
             return {'user_id': user[0], 'name': user[1],
                     'email': user[2], 'password': user[3]}
         else:
             return False
+
+    def get_user_id(email):
+        connection = connect(config.db_file)
+        query = "SELECT user_id FROM users WHERE email= ?"
+        user_id = connection.execute(query, (email,)).fetchone()[0]
+        connection.close()
+        return user_id
 
     @staticmethod
     def isAValidEmail(email):
@@ -54,7 +56,6 @@ class User:
 
     @staticmethod
     def hashPassword(password):
-        # salt = os.urandom(16)
         password = password.encode('utf-8')
         salt = b"SelfEvaluator"
         return hashlib.pbkdf2_hmac(
@@ -83,8 +84,8 @@ class User:
             hashed_password = User.hashPassword(password)
             connection = connect(config.db_file)
             cursor = connection.cursor()
-            query = f"UPDATE users SET name = '{name}', password = '{hashed_password}' WHERE user_id = {user_id} LIMIT 1"
-            cursor.execute(query)
+            query = f"UPDATE users SET name = ?, password = ? WHERE user_id = ? LIMIT 1"
+            cursor.execute(query, (name, password, user_id))
             connection.commit()
             connection.close()
             return True
@@ -94,8 +95,8 @@ class User:
     def remove(user_id):
         connection = connect(config.db_file)
         cursor = connection.cursor()
-        query = f"DELETE FROM users WHERE user_id = {user_id} LIMIT 1"
-        cursor.execute()
+        query = "DELETE FROM users WHERE user_id = ?"
+        cursor.execute(query, (user_id,))
         connection.commit()
         connection.close()
         return True
