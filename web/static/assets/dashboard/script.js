@@ -102,7 +102,7 @@ let vue = new Vue({
 
       if (task_name != "") {
         this.tasks_count++;
-        axios.post(add_task, `task_name=${task_name}&category=${category_id}`).then(function (response) {}).catch(function (error) {
+        axios.post(add_task, `task_name=${task_name}&category_id=${category_id}`).then(function (response) {}).catch(function (error) {
           console.error(error);
           vue.errors.push("Can not add Task");
         })

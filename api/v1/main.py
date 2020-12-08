@@ -24,7 +24,8 @@ if __name__ == "__main__":
 
     @app.route(f'/{TOKEN}/task/all', methods=["POST"])
     def tasks():
-        user_id = request.values.get("user_id")
+        email = request.values.get("email")
+        user_id = User.get_user_id(email)
         return jsonify(tasks=Task.get_all(user_id), tasks_count=Task.get_count(user_id))
 
     @app.route(f'/{TOKEN}/task/<task_id>', methods=["POST"])
@@ -38,7 +39,8 @@ if __name__ == "__main__":
 
     @app.route(f'/{TOKEN}/task/delete/<task_id>', methods=["DELETE"])
     def delete_task(task_id):
-        user_id = request.values.get('user_id')
+        email = request.values.get('email')
+        user_id = User.get_user_id(email)
         if Task.exist(task_id, user_id):
             return jsonify(result=Task.delete(task_id, user_id))
         else:
@@ -47,7 +49,8 @@ if __name__ == "__main__":
     @app.route(f'/{TOKEN}/task/update/<task_id>', methods=["PUT"])
     def update_task(task_id):
         task_name = request.values.get('task_name')
-        user_id = request.values.get('user_id')
+        email = request.values.get('email')
+        user_id = User.get_user_id(email)
         if Task.exist(task_id, user_id):
             update_status = Task.update(task_id, task_name, user_id)
             return jsonify(status=update_status)
@@ -58,8 +61,8 @@ if __name__ == "__main__":
     def add_task():
         task_name = request.values.get('task_name')
         category_id = request.values.get('category_id')
-        user_id = request.values.get('user_id')
-        print(task_name)
+        email = request.values.get('email')
+        user_id = User.get_user_id(email)
         if Task.is_task_name_valid(task_name):
             add_task_status = Task.add(task_name, category_id, user_id)
             return jsonify(status=add_task_status)
@@ -70,15 +73,17 @@ if __name__ == "__main__":
 
     @app.route(f'/{TOKEN}/category/all', methods=['POST'])
     def get_categories():
-        user_id = request.values.get('user_id')
+        email = request.values.get("email")
+        user_id = User.get_user_id(email)
         categories = Category.get_all(user_id)
         return jsonify(categories=categories, categories_count=Category.get_count(user_id))
 
     @app.route(f'/{TOKEN}/category/add', methods=["POST"])
     def add_category():
         name = request.values.get('name')
-        user_id = request.values.get('user_id')
         description = request.values.get('description')
+        email = request.values.get('email')
+        user_id = User.get_user_id(email)
         add_status = Category.add(name, description, user_id)
         if add_status:
             return jsonify(status=add_status)
@@ -87,7 +92,8 @@ if __name__ == "__main__":
 
     @app.route(f'/{TOKEN}/category/delete/<category_id>', methods=["DELETE"])
     def delete_category(category_id):
-        user_id = request.values.get('user_id')
+        email = request.values.get('email')
+        user_id = User.get_user_id(email)
         # check if category exists
         if Category.exist(category_id, user_id):
             delete_status = Category.delete(category_id, user_id)
@@ -97,7 +103,8 @@ if __name__ == "__main__":
 
     @app.route(f'/{TOKEN}/category/update/<category_id>', methods=["PUT"])
     def update_category(category_id):
-        user_id = request.values.get('user_id')
+        email = request.values.get('email')
+        user_id = User.get_user_id(email)
         # check if category exist
         if Category.exist(category_id, user_id):
             name = request.values.get('name')
@@ -113,7 +120,8 @@ if __name__ == "__main__":
     def add_result():
         result = request.values.get('result')
         date = request.values.get('date')
-        user_id = request.values.get('user_id')
+        email = request.values.get('email')
+        user_id = User.get_user_id(email)
         add_status = Result.add(result, date, user_id)
         return jsonify(status=add_status)
 
@@ -131,7 +139,8 @@ if __name__ == "__main__":
 
     @app.route(f'/{TOKEN}/result/all', methods=["POST"])
     def get_all_results():
-        user_id = request.values.get('user_id')
+        email = request.values.get('email')
+        user_id = User.get_user_id(email)
         results = Result.get_all(user_id)
         return jsonify(results=results, results_count=Result.get_count(user_id))
 

@@ -1,38 +1,51 @@
-body{
-    font-family: 'Balsamiq Sans', cursive !important;
+body {
+    font-family: 'poppins', cursive !important;
 }
+
 .border-left-info {
     border-left: 0.25rem solid #36b9cc !important;
 }
-.border-left-success{
-    border-left: 0.25em solid #28a745!important;
+
+.border-left-success {
+    border-left: 0.25em solid #28a745 !important;
 }
-.border-left-warning{
-    border-left: 0.25em solid #ffc107!important;
+
+.border-left-warning {
+    border-left: 0.25em solid #ffc107 !important;
 }
-.border-left-primary{
-    border-left: 0.25em solid #007bff!important;
+
+.border-left-primary {
+    border-left: 0.25em solid #007bff !important;
 }
-ul{
+
+ul {
     margin: 0px;
     padding: 5px;
     list-style: none;
 }
-.fa-trash{
+
+.fa-trash {
     cursor: pointer;
 }
-.modal{
+
+.modal {
     display: unset !important;
 }
-.link{
+
+.link {
     cursor: pointer;
 }
-.tasks img, .categories img{
+
+.tasks img,
+.categories img {
     opacity: 0.6;
 }
-.blur{
+
+.blur {
     filter: blur(3px);
 }
-.tasks,.categories{
+
+.tasks,
+.categories {
     min-height: 600px !important;
 }
