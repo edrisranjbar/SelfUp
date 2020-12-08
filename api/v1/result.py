@@ -10,7 +10,7 @@ class Result:
         connection = connect(config.db_file)
         cursor = connection.cursor()
         cursor.execute(
-            """CREATE TABLE IF NOT EXISTS results (id integer PRIMARY KEY, result TEXT, date DATE)""")
+            """CREATE TABLE IF NOT EXISTS results (id integer PRIMARY KEY, result TEXT, date DATE, user_id integer, FOREIGN KEY(user_id) REFERENCES user(user_id))""")
         connection.close()
         return True
 
@@ -18,10 +18,11 @@ class Result:
     def get_all(user_id, limit=None):
         connection = connect(config.db_file)
         if limit is not None:
-            query = "SELECT * FROM results LIMIT {}".format(limit)
+            query = "SELECT * FROM results WHERE user_id = ? LIMIT ?"
+            results = connection.execute(query, (user_id, limit)).fetchall()
         else:
-            query = "SELECT * FROM results"
-        results = connection.execute(query).fetchall()
+            query = "SELECT * FROM results WHERE user_id = ?"
+            results = connection.execute(query, (user_id, )).fetchall()
         connection.close()
         the_results = []
         for result in results:
@@ -33,16 +34,16 @@ class Result:
     @staticmethod
     def get_count(user_id):
         conn = connect(config.db_file)
-        query = "SELECT count(*) FROM results WHERE user_id = {user_id}"
-        count = conn.execute(query).fetchone()[0]
+        query = "SELECT count(*) FROM results WHERE user_id = ?"
+        count = conn.execute(query, (user_id,)).fetchone()[0]
         conn.close()
         return count
 
     @staticmethod
     def exist(result_id):
         connection = connect(config.db_file)
-        query = f"SELECT COUNT (*) FROM results WHERE id={result_id}"
-        count = connection.execute(query).fetchone()[0]
+        query = "SELECT COUNT (*) FROM results WHERE id= ?"
+        count = connection.execute(query, (result_id,)).fetchone()[0]
         connection.close()
         if count > 0:
             return True
@@ -53,9 +54,9 @@ class Result:
     def add(result, date, user_id):
         connection = connect(config.db_file)
         cursor = connection.cursor()
-        query = f'INSERT INTO results (result,date) VALUES ("{result}","{date}", {user_id})'
+        query = 'INSERT INTO results (result,date,user_id) VALUES (?,?,?)'
         try:
-            cursor.execute(query)
+            cursor.execute(query, (result, date, user_id))
             connection.commit()
             connection.close()
             return True
@@ -67,20 +68,20 @@ class Result:
         """ DELETE A SINGLE result BASED ON ID """
         connection = connect(config.db_file)
         cursor = connection.cursor()
-        query = f'DELETE FROM results WHERE id="{result_id}" AND user_id = {user_id}'
-        cursor.execute(query)
+        query = 'DELETE FROM results WHERE id=?'
+        cursor.execute(query, (result_id,))
         connection.commit()
         connection.close()
         return True
 
     @staticmethod
-    def update(result_id, result, date, user_id):
+    def update(result_id, result, date):
         if Result.exist(result_id):
             connection = connect(config.db_file)
             cursor = connection.cursor()
-            query = f"UPDATE results SET result='{result}', date='{date}' WHERE id={result_id} AND user_id = {user_id}"
+            query = "UPDATE results SET result=?, date=? WHERE id=?"
             try:
-                cursor.execute(query)
+                cursor.execute(query, (result, date, result_id))
                 connection.commit()
                 return True
             except:
