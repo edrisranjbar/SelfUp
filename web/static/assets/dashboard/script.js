@@ -98,7 +98,7 @@ let vue = new Vue({
     addTask: function () {
       let task_name = document.querySelector('#task_name').value.trim();
       let category_id = document.querySelector('#category').value;
-      // FIXME: check if there is any task, otherwise just set the last_task_id to 1
+      // check if there is any task, otherwise just set the last_task_id to 1
       let last_task_id;
       if (this.tasks_count > 0) {
         last_task_id = this.tasks[this.tasks.length - 1].id;
