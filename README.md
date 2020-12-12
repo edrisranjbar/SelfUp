@@ -4,6 +4,10 @@
 
 ## How SelfUp works
 
+### Project architecture
+
+![Project architecture](architecture.png)
+
 ## How to use Self evaluator
 
 right now it is just a prototype and it's growing so it is not on production and if you wanna use it you have it install it manually on you machin or you Server.
