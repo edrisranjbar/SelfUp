@@ -43,7 +43,7 @@ Flask-Cors==3.0.8
 Flask-Login==0.5.0
 gpg===1.14.0-unknown
 html5lib==1.1
-httplib2==0.18.1
+httplib2==0.19.0
 idna==2.10
 importlib-metadata==1.6.0
 ipykernel==5.3.4
