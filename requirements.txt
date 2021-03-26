@@ -125,7 +125,7 @@ python-debian==0.1.37
 python-xlib==0.27
 pytz==2020.1
 pyxdg==0.26
-PyYAML==5.3.1
+PyYAML==5.4
 pyzmq==19.0.2
 readme-renderer==26.0
 reportlab==3.5.47
