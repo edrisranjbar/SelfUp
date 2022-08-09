@@ -85,7 +85,7 @@ nbformat==5.0.7
 netifaces==0.10.4
 nftables==0.1
 notebook==6.4.12
-numpy==1.18.4
+numpy==1.22.0
 oauthlib==3.1.0
 olefile==0.46
 onboard==1.4.1
