@@ -111,7 +111,7 @@ pycryptodomex==3.9.7
 pycups==2.0.1
 Pygments==2.7.4
 PyGObject==3.38.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 pymacaroons==0.13.0
 PyNaCl==1.4.0
 pynput==1.7.1
