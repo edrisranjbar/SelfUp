@@ -11,7 +11,7 @@ bleach==3.3.0
 blinker==1.4
 Brlapi==0.7.0
 catfish==1.4.13
-certifi==2020.4.5.1
+certifi==2022.12.7
 chardet==3.0.4
 chrome-gnome-shell==0.0.0
 cliapp==1.20180812.1
