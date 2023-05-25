@@ -129,7 +129,7 @@ PyYAML==5.4
 pyzmq==19.0.2
 readme-renderer==26.0
 reportlab==3.5.55
-requests==2.23.0
+requests==2.31.0
 requests-toolbelt==0.9.1
 requests-unixsocket==0.2.0
 SecretStorage==3.1.2
