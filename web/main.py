@@ -1,10 +1,14 @@
-from flask import Flask, url_for, request, render_template, abort, redirect, session, flash, jsonify
-from markupsafe import escape
-import requests
+from flask import Flask, url_for, request, render_template, abort, redirect, session, flash
+from database.db import create_all_tables
+from controllers.users import check_user_exists, add_new_user
+from controllers.tasks import get_all_tasks_db, create_task, delete_task_db, update_task_db
+from controllers.categories import get_all_categories_db, add_category_db, update_category_db, delete_category_db
+from controllers.results import get_all_results_db, add_result_db
 from settings import *
 
 app = Flask(__name__)
 
+create_all_tables()
 
 @app.route('/')
 def index():
@@ -22,8 +26,7 @@ def login():
             redirect(url_for("login"))
         email = request.values.get('email')
         password = request.values.get('password')
-        user_exists = requests.post(f"{API_URL}user/exists",
-                                    {"email": email, "password": password}).json()["status"]
+        user_exists = check_user_exists(email, password)
         if user_exists:
             # set session
             session["email"] = email
@@ -48,8 +51,7 @@ def sign_up():
         email = request.values.get('email')
         password = request.values.get('password')
         # TODO: check if user exists, rais error
-        add_user = requests.post(f"{API_URL}user/add", {"name": name,
-                                                        "email": email, "password": password}).json()["status"]
+        add_user = add_new_user(name, email, password)
         if add_user:
             return redirect(url_for("dashboard"))
     return render_template("sign_up.html")
@@ -81,9 +83,8 @@ def dashboard():
 @app.route('/dashboard/task/all')
 def get_all_tasks():
     if is_logged_in():
-        tasks = requests.post(f"{API_URL}task/all",
-                              {"email": session['email']}).json()
-        return jsonify(tasks)
+        tasks = get_all_tasks_db(session['email'])
+        return tasks
 
 
 @app.route('/dashboard/task/add', methods=['POST'])
@@ -91,34 +92,30 @@ def add_task():
     if is_logged_in:
         task_name = request.values.get('task_name')
         category_id = request.values.get('category_id')
-        add_task_status = requests.post(
-            f"{API_URL}task/add", {"email": session['email'], "task_name": task_name, "category_id": category_id}).json()
-        return jsonify(add_task_status)
+        add_task_status = create_task(task_name, category_id, session['email'])
+        return add_task_status
 
 
 @app.route('/dashboard/task/delete/<task_id>')
 def delete_task(task_id):
     if is_logged_in():
-        delete_status = requests.delete(
-            f"{API_URL}task/delete/{task_id}", data={"email": session['email']}).json()
-        return jsonify(delete_status)
+        delete_status = delete_task_db(session['email'], task_id)
+        return delete_status
 
 
 @app.route('/dashboard/task/update/<task_id>', methods=['PUT'])
 def update_task(task_id):
     if is_logged_in():
         task_name = request.values.get('task_name')
-        update_task_status = requests.put(
-            f"{API_URL}task/update/{task_id}", {"task_name": task_name, "email": session['email']}).json()
-        return jsonify(update_task_status)
+        update_task_status = update_task_db(session['email'], task_name, task_id)
+        return update_task_status
 
 
 @app.route('/dashboard/category/all')
 def get_all_categories():
     if is_logged_in():
-        categories = requests.post(f"{API_URL}category/all",
-                                   {"email": session['email']}).json()
-        return jsonify(categories)
+        categories = get_all_categories_db(session['email'])
+        return categories
 
 
 @app.route('/dashboard/category/add', methods=['POST'])
@@ -126,9 +123,8 @@ def add_category():
     if is_logged_in():
         name = request.values.get('name')
         description = request.values.get('description')
-        add_category_status = requests.post(
-            f"{API_URL}category/add", {"name": name, "description": description, "email": session['email']}).json()
-        return jsonify(add_category_status)
+        add_category_status = add_category_db(name, description, session['email'])
+        return add_category_status
 
 
 @app.route('/dashboard/category/update/<category_id>', methods=['PUT'])
@@ -136,25 +132,22 @@ def update_category(category_id):
     if is_logged_in():
         name = request.values.get('name')
         description = request.values.get('description')
-        update_category_status = requests.put(
-            f"{API_URL}category/update/{category_id}", {"name": name, "description": description, "category_id": category_id, "email": session['email']}).json()
-        return jsonify(update_category_status)
+        update_category_status = update_category_db(session['email'], category_id, name, description)
+        return update_category_status
 
 
 @app.route('/dashboard/category/delete/<category_id>')
 def delete_category(category_id):
     if is_logged_in():
-        delete_category_status = requests.delete(
-            f"{API_URL}category/delete/{category_id}", data={"email": session['email']}).json()
+        delete_category_status = delete_category_db(session['email'], category_id)
         return delete_category_status
 
 
 @app.route('/dashboard/result/all')
 def get_all_results():
     if is_logged_in():
-        results = requests.post(
-            f"{API_URL}result/all", {"email": session['email']}).json()
-        return jsonify(results)
+        results = get_all_results_db(session['email'])
+        return results
 
 
 @app.route('/dashboard/result/add', methods=['POST'])
@@ -162,9 +155,8 @@ def add_result():
     if is_logged_in():
         result = request.values.get('result')
         date = request.values.get('date')
-        results = requests.post(
-            f"{API_URL}result/add", {"result": result, "date": date, "email": session['email']}).json()
-        return jsonify(results)
+        results = add_result_db(result, date, session['email'])
+        return results
 
 
 app.secret_key = TOKEN
