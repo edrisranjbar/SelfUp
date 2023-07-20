@@ -109,7 +109,7 @@ pycodestyle==2.6.0
 pycrypto==2.6.1
 pycryptodomex==3.9.7
 pycups==2.0.1
-Pygments==2.7.4
+Pygments==2.15.0
 PyGObject==3.38.0
 PyJWT==2.4.0
 pymacaroons==0.13.0
