@@ -19,7 +19,7 @@ click==7.1.2
 cmdtest==0.32+git
 colorama==0.4.3
 command-not-found==0.3
-cryptography==41.0.2
+cryptography==41.0.4
 cupshelpers==1.0
 cycler==0.10.0
 dbus-python==1.2.16
