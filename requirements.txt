@@ -30,7 +30,7 @@ deprecation==2.1.0
 distlib==0.3.1
 distro==1.5.0
 distro-info===0.23ubuntu1
-dnspython==1.16.0
+dnspython==2.6.1
 docutils==0.16
 ecdsa==0.15
 entrypoints==0.3
