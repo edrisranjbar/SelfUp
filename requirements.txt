@@ -107,7 +107,7 @@ PyAudio==0.2.11
 pycairo==1.16.2
 pycodestyle==2.6.0
 pycrypto==2.6.1
-pycryptodomex==3.9.7
+pycryptodomex==3.19.1
 pycups==2.0.1
 Pygments==2.15.0
 PyGObject==3.38.0
