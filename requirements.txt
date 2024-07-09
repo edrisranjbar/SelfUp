@@ -172,4 +172,4 @@ wget==3.2
 widgetsnbextension==2.0.0
 xcffib==0.8.1
 xkit==0.0.0
-zipp==1.0.0
+zipp==3.19.1
